@@ -62,10 +62,10 @@
                     <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
                       <div class="card-header pb-1">
                         <div class="card-title">
-                          <h4 class="text-center mb-2">{{ __('messages.welcomeBack') }}</h4>
+                          <h4 class="text-center mb-2">{{ __('messages.produccionProyectos') }}</h4>
                           <div class="divider">
                             <div class="divider-text text-uppercase text-muted">
-                              <small>{{ __('messages.to') }}</small>
+                              <small></small>
                             </div>
                           </div>
                         </div>

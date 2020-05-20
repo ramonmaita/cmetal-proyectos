@@ -113,7 +113,16 @@
 		@forelse($proyecto->Sectores as $sector)
 			    <div class="card collapse-header">
 			      	<div id="heading-sector-{{$sector->id}}" class="card-header collapsed" role="tablist" data-toggle="collapse" data-target="#accordion-sector-{{$sector->id}}" aria-expanded="false" aria-controls="accordion-sector-{{$sector->id}}">
-			        	<span class="collapse-title">{{ $sector->nombre }}</span>
+			        	<span class="collapse-title mb-1">
+			        		{{ $sector->nombre }}
+			        	</span>
+		        		<br> 
+		        		<div class="activity-progress flex-grow-1 mt-2" >
+		                  	<div class="progress progress-bar-primary progress-sm mt-1" style="width: 92% !important; margin: auto;">
+		                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
+		                  	</div>
+		                </div>
+
 			      	</div>
 			      	<div id="accordion-sector-{{$sector->id}}" role="tabpanel" data-parent="#accordionWrapa1" aria-labelledby="heading-sector-{{$sector->id}}" class="collapse" style="">
 				        <div class="card-content">
@@ -157,9 +166,9 @@
 							                  	<li class="widget-todo-item  cursor-pointer modal-actividades {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'completed' : '' }}"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}">
 							                    	<div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
 							                      		<div class="widget-todo-title-area d-flex align-items-center">
-									                        <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+									                        {{-- <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i> --}}
 									                        <div class="checkbox checkbox-shadow">
-									                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'checked="true"' : '' }} >
+									                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'checked="true"' : '' }}  disabled="true">
 									                          <label for="checkbox-actividad-{{$actividad->id}}"></label>
 									                        </div>
 
@@ -237,16 +246,34 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel20">Full Screen Modal</h4>
+          <h4 class="modal-title" id="myModalLabel20"></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <i class="bx bx-x"></i>
           </button>
         </div>
         <div class="modal-body">
-          Cake cupcake sugar plum. Sesame snaps pudding cupcake candy canes icing cheesecake. Sweet roll
-          pudding lollipop apple pie gummies dragée. Chocolate bar cookie caramels I love lollipop ice
-          cream tiramisu lollipop sweet.
-
+         	<table class="table table-striped">
+         		<thead>
+         			<tr>
+         				<th>{{ __('messages.descripcion') }}</th>
+         				<th>{{ __('messages.metrado') }}</th>
+         				<th>{{ __('messages.precio') }}</th>
+         			</tr>
+         		</thead>
+         		<tbody>
+         			<tr>
+         				<td id="descripcion"></td>
+         				<td id="metrado"></td>
+         				<td id="precio"></td>
+         			</tr>
+         		</tbody>
+         		<tfoot>
+         			<tr>
+         				<td align="right" colspan="2">{{ __('messages.precioTotal')}}</td>
+         				<td id="precioTotal"></td>
+         			</tr>
+         		</tfoot>
+         	</table>
 
           <!-- App File - Recent Accessed Files Section Starts -->
           	<div class="divider">
@@ -356,6 +383,12 @@
    				.done(function(data) {
    					console.log("success");
    					if(data.success == true){
+   						$('.modal-title').html(data.actividad.nombre);
+   						$('#descripcion').html(data.actividad.descripcion);
+   						$('#metrado').html(data.actividad.metrado);
+   						$('#precio').html(data.actividad.precio);
+   						$('#precioTotal').html(data.actividad.metrado*data.actividad.precio);
+
    						unBlock()
    						$('#modal-actividades').modal('show');
    					}

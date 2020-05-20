@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use DB;
+
 class Sector extends Model
 {
 	protected $table ="sectores";
@@ -20,5 +22,13 @@ class Sector extends Model
     public function Actividades()
     {
     	return $this->hasMany('App\Actividad');
+    }
+
+    public function porcentajeSector()
+    {
+        return $this->hasManyThrough('App\Reporte', 'App\Actividad');
+       // $this->hasMany('App\Actividad')->sum('metrado');
+       // $ida = $this->hasMany('App\Actividad')->pluck('id');
+       // return 
     }
 }

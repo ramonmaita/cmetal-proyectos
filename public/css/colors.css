@@ -6318,8 +6318,8 @@ input:focus ~ .bg-danger {
 .btn-cmetal.active,
 .btn-cmetal:active,
 .btn-cmetal:focus {
-    background-color: #437dec !important;
-    color: #fff !important;
+    background-color: #fff !important;
+    color: #000 !important;
 }
 .btn-cmetal.glow {
     /*box-shadow: 0 2px 4px 0 rgba(90, 141, 238, 0.5) !important;*/

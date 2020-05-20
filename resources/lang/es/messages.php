@@ -19,7 +19,7 @@ return [
 	'fechaInicio' => 'Fecha de Inicio',
 	'fechaFin' => 'Fecha de Culminación',
 	'nombreProyecto' => 'Nombre del Proyecto',
-	'direccionProyecto' => 'Dirección del Proyecto',
+	'direccionProyecto' => 'Ubicación del Proyecto',
 	'descripcionProyecto' => 'Descripción del Proyecto',
 	'estatus' => 'Estatus',
 	'activo' => 'Activo',
@@ -46,7 +46,8 @@ return [
 	'newActividad' => 'Nueva Actividad',
 	'nombre' => 'Nombre',
 	'editar' => 'Editar',
-	'editProject' => 'Editar Proyecto'
+	'editProject' => 'Editar Proyecto',
+	'produccionProyectos' => 'Producción de Proyectos'
 
 
 
