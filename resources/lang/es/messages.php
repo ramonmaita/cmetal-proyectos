@@ -1,0 +1,53 @@
+<?php
+
+return [
+
+	'welcome' => 'Bienvenido a tu aplicacion.',
+	'welcomeBack' => 'Bienvenido de nuevo',
+	'email' => 'Correo Electrónico',
+	'password' => 'Contraseña',
+	'olvidoPassword' => '¿Olvidó su contraseña?',
+	'login' => 'Iniciar Sesión',
+	'logout' => 'Cerrar Sesión',
+	'to' => 'a',
+	'spanish' => 'Spanish',
+	'english' => 'English',
+	'home' => 'Inicio',
+	'projects' => 'Proyectos',
+	'newProject' => 'Nuevo Proyecto',
+	'editProfile' => 'Editar Perfil',
+	'fechaInicio' => 'Fecha de Inicio',
+	'fechaFin' => 'Fecha de Culminación',
+	'nombreProyecto' => 'Nombre del Proyecto',
+	'direccionProyecto' => 'Dirección del Proyecto',
+	'descripcionProyecto' => 'Descripción del Proyecto',
+	'estatus' => 'Estatus',
+	'activo' => 'Activo',
+	'reset' => 'Reiniciar',
+	'guardar' => 'Guardar',
+	'operacionExitosa' => 'La opereacón se realizo con exito.',
+	'errores' => 'Por favor, consulte el siguiente formulario para ver si hay errores.',
+	'acciones' => 'acciones',
+	'sectores' => 'Sectores',
+	'sector' => 'Sector',
+	'sector' => 'Sector',
+	'newSector' => 'Nuevo Sector',
+	'editSector' => 'Editar Sector',
+	'nombreSector' => 'Nombre de Sector',
+	'descripcion' => 'Descripcion',
+	'metrado' => 'Metrado',
+	'metrados' => 'Unidades de Metrado',
+	'precio' => 'Precio',
+	'nombreMetrado' => 'Unidad de Metrado',
+	'newMetrado' => 'Nueva Unidad de  Metrado',
+	'showActividades' => 'Ver Actividades',
+	'editActividad' => 'Editar Actividad',
+	'actividades' => 'Actividades',
+	'newActividad' => 'Nueva Actividad',
+	'nombre' => 'Nombre',
+	'editar' => 'Editar',
+	'editProject' => 'Editar Proyecto'
+
+
+
+];

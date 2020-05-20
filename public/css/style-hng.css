@@ -1,0 +1,24 @@
+.wizard .steps ul > li.done {
+    background: #000;
+}
+.accordion-struct.panel-group .panel .panel-heading.activestate {
+    background: #f2b701 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+	background: #f2b701 !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:active, .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    background: #f2b701 !important;
+    border-color: #f2b701 !important;
+}
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::before {
+	background-color: #2b2b2b !important;
+}
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child::before {
+	background-color: #f2b701 !important;
+}
+
+.panel-black > .panel-heading {
+    background-color: #000 !important;
+}
