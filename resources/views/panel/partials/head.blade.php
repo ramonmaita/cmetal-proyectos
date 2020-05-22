@@ -90,5 +90,10 @@
           .data-table{
             width: 100% !important;
           }
+
+          .progress-bar-cmetal .progress-bar {
+              background-color: #5b1818;
+              box-shadow: 0 2px 6px 0 rgb(91, 24, 24);
+          }
       </style>
   </head>

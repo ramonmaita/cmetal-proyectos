@@ -15,4 +15,9 @@ class Reporte extends Model
     {
     	return $this->belongsTo('App\Actividad','actividad_id','id');
     }
+
+    public function Soportes()
+    {
+    	return $this->hasMany('App\Soporte');
+    }
 }

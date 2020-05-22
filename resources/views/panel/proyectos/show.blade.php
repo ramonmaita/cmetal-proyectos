@@ -46,7 +46,7 @@
             break;
     }
 @endphp
-
+@include('alertas')
 <div class="row">
 	<div class="col-12">
   		<div class="card">
@@ -88,11 +88,19 @@
                         	<p>{{ $proyecto->descripcion }}</p>
                       	</div>
                     </div>
+                    @if(Auth::user()->tipo == 1)
                     <a href="{{ route('proyectos.edit',['id' => $proyecto->id]) }}" class="btn d-none d-sm-block float-right btn-light-cmetal mb-2">
                       <i class="cursor-pointer bx bx-edit font-small-3 mr-50"></i><span>{{ __('messages.editar') }}</span>
                     </a>
                     <a href="{{ route('proyectos.edit',['id' => $proyecto->id]) }}" class="btn d-block d-sm-none btn-block text-center btn-light-cmetal">
                       <i class="cursor-pointer bx bx-edit font-small-3 mr-25"></i><span>{{ __('messages.editar') }}</span></a>
+					@endif
+
+                     {{--  <a href="{{ route('proyectos.pdf',['id' => $proyecto->id]) }}" target="_blank" class="btn d-none d-sm-block float-right btn-light-cmetal mb-2">
+                      <i class="cursor-pointer bx bx-edit font-small-3 mr-50"></i><span>{{ __('messages.editar') }}</span>
+                    </a>
+                    <a href="{{ route('proyectos.pdf',['id' => $proyecto->id]) }}" target="_blank" class="btn d-block d-sm-none btn-block text-center btn-light-cmetal">
+                      <i class="cursor-pointer bx bx-edit font-small-3 mr-25"></i><span>{{ __('messages.editar') }}</span></a> --}}
               	</div>
       			{{-- <div class="card-body">
         			<div class="row">
@@ -118,7 +126,7 @@
 			        	</span>
 		        		<br> 
 		        		<div class="activity-progress flex-grow-1 mt-2" >
-		                  	<div class="progress progress-bar-primary progress-sm mt-1" style="width: 92% !important; margin: auto;">
+		                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
 		                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
 		                  	</div>
 		                </div>
@@ -127,53 +135,40 @@
 			      	<div id="accordion-sector-{{$sector->id}}" role="tabpanel" data-parent="#accordionWrapa1" aria-labelledby="heading-sector-{{$sector->id}}" class="collapse" style="">
 				        <div class="card-content">
 				          	<div class="card-body">
-				          		<p>{{ $sector->descripcion }}</p>
-
+				          		<div class="row">
+				          			<div class="col-12">
+				          				<p>{{ $sector->descripcion }}</p>
+				          			</div>
+				          			@if(Auth::user()->tipo == 1)
+				          			<div class="col-12">
+				          				<a href="{{ route('sectores.edit',['id' => $sector->id]) }}" class="btn d-none d-sm-block float-right btn-light-cmetal mb-2">
+					                      <i class="cursor-pointer bx bx-edit font-small-3 mr-50"></i><span>{{ __('messages.editar') }}</span>
+					                    </a>
+					                    <a href="{{ route('sectores.edit',['id' => $sector->id]) }}" class="btn d-block d-sm-none btn-block text-center btn-light-cmetal">
+					                      <i class="cursor-pointer bx bx-edit font-small-3 mr-25"></i><span>{{ __('messages.editar') }}</span></a>
+				          			</div>
+				          			@endif
+				          		</div>
+								<hr>
 				          		<div class="card widget-todo">
 					              	<div class="card-header border-bottom d-flex justify-content-between align-items-center flex-wrap">
 						                <h4 class="card-title d-flex mb-25 mb-sm-0">
 						                  <i class="bx bx-check font-medium-5 pl-25 pr-75"></i> {{ __('messages.actividades') }}
 						                </h4>
-						                {{-- <ul class="list-inline d-flex mb-25 mb-sm-0">
-						                  <li class="d-flex align-items-center">
-						                    <i class="bx bx-check-circle font-medium-3 mr-50"></i>
-						                    <div class="dropdown">
-						                      <div class="dropdown-toggle mr-1 cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Task
-						                      </div>
-						                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						                        <a class="dropdown-item" href="#">Option 1</a>
-						                        <a class="dropdown-item" href="#">Option 2</a>
-						                        <a class="dropdown-item" href="#">Option 3</a>
-						                      </div>
-						                    </div>
-						                  </li>
-						                  <li class="d-flex align-items-center">
-						                    <i class="bx bx-sort mr-50 font-medium-3"></i>
-						                    <div class="dropdown">
-						                      <div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Task</div>
-						                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-						                        <a class="dropdown-item" href="#">Option 1</a>
-						                        <a class="dropdown-item" href="#">Option 2</a>
-						                        <a class="dropdown-item" href="#">Option 3</a>
-						                      </div>
-						                    </div>
-						                  </li>
-						                </ul> --}}
 					              	</div>
-					              	<div class="card-body px-0 py-1">
+					              	<div class="card-body px-0 py-3">
 						                <ul class="widget-todo-list-wrapper" id="widget-todo-list">
 											@forelse($sector->Actividades as $actividad)
-							                  	<li class="widget-todo-item  cursor-pointer modal-actividades {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'completed' : '' }}"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}">
+							                  	<li class="widget-todo-item  cursor-pointer {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'completed' : '' }}" >
 							                    	<div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
 							                      		<div class="widget-todo-title-area d-flex align-items-center">
-									                        {{-- <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i> --}}
 									                        <div class="checkbox checkbox-shadow">
 									                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'checked="true"' : '' }}  disabled="true">
 									                          <label for="checkbox-actividad-{{$actividad->id}}"></label>
 									                        </div>
 
 							                      		</div>
-									                        	<div class="activity-progress flex-grow-1" >
+									                        	<div class="activity-progress flex-grow-1  modal-actividades"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}">
 												                  	<span class="text-muted d-inline-block mb-50">
 												                  		<span class="widget-todo-title ml-50">
 									                        				{{ $actividad->nombre }}
@@ -190,13 +185,21 @@
 									                            	<span class="font-size-base text-primary">RA</span>
 									                          	</div>
 									                        </div>
+									                        @if(Auth::user()->tipo != 3)
 								                        	<div class="dropdown">
-								                          		<span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+								                          		<span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu" data-offset="5,20"></span>
 								                          		<div class="dropdown-menu dropdown-menu-right">
-								                            		<a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> edit</a>
-								                            		<a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> delete</a>
+								                          			@if(Auth::user()->tipo == 1)
+								                            		<a class="dropdown-item" href="{{ route('sectores.actividades.edit',['id' => $actividad->id]) }}"><i class="bx bx-edit-alt mr-1"></i> {{ __('messages.edit') }}</a>
+								                            		@endif
+								                            		{{-- <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> {{ __('messages.delete') }}</a> --}}
+																	
+																	@if(Auth::user()->tipo == 2)
+								                            		<a class="dropdown-item modal-reporte" href="#"  data-uri="{{ route('reportes.store',['id' => $actividad->id]) }}" data-actividad="{{ $actividad->nombre }}" data-max="{{ $actividad->metrado - $actividad->Reportes->sum('metrado') }}"><i class="bx bx-file mr-1"></i> {{ __('messages.reportar') }}</a>
+								                            		@endif
 								                          		</div>
 								                        	</div>
+								                        	@endif
 								                      	</div>
 							                    	</div>
 							                  	</li>
@@ -257,19 +260,21 @@
          			<tr>
          				<th>{{ __('messages.descripcion') }}</th>
          				<th>{{ __('messages.metrado') }}</th>
+         				<th>{{ __('messages.metradoRealizado') }}</th>
          				<th>{{ __('messages.precio') }}</th>
          			</tr>
          		</thead>
          		<tbody>
          			<tr>
          				<td id="descripcion"></td>
-         				<td id="metrado"></td>
+         				<td id="metradoT"></td>
+         				<td id="metradoR"></td>
          				<td id="precio"></td>
          			</tr>
          		</tbody>
          		<tfoot>
          			<tr>
-         				<td align="right" colspan="2">{{ __('messages.precioTotal')}}</td>
+         				<td align="right" colspan="3">{{ __('messages.precioTotal')}}</td>
          				<td id="precioTotal"></td>
          			</tr>
          		</tfoot>
@@ -277,61 +282,103 @@
 
           <!-- App File - Recent Accessed Files Section Starts -->
           	<div class="divider">
-              <div class="divider-text">{{ __('messages.archivos') }}</div>
+              <div class="divider-text">{{ __('messages.reportes') }}</div>
             </div>
-          	<div class="col-12">	
-			    <div class="row app-file-recent-access">
-			      	<div class="col-md-3 col-6">
-				        <div class="card border shadow-none mb-1 app-file-info ">
-				          <div class="card-content">
-				            <div class="app-file-content-logo card-img-top cursor-pointer" style="padding: 10px 6px;    border-bottom: 1px solid #dfe3e7; background-color: #f2f4f4;">
-				              <i class="bx bx-dots-vertical-rounded app-file-edit-icon d-block float-right"></i>
-				              <img class="d-block mx-auto" src="{{asset('images/icon/pdf.png')}}" alt="Card image cap" width="30" height="38" style="margin: 25px 0;">
-				            </div>
-				            <div class="card-body p-50">
-				              <div class="app-file-recent-details">
-				                <div class="app-file-name font-size-small font-weight-bold"><a href="">Felecia Resume.pdf</a></div>
-				                <div class="app-file-size font-size-small text-muted mb-25">12.85kb</div>
-				                <div class="app-file-last-access font-size-small text-muted">Last accessed : 3 hours ago</div>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
-			      	</div>
-
-			      	<div class="col-md-3 col-6">
-				        <div class="card border shadow-none mb-1 app-file-info ">
-				          <div class="card-content">
-				            <div class="app-file-content-logo card-img-top cursor-pointer" style="padding: 10px 6px;    border-bottom: 1px solid #dfe3e7; background-color: #f2f4f4; width: 100%">
-				              <i class="bx bx-dots-vertical-rounded app-file-edit-icon d-block float-right"></i>
-				              <img class="d-block mx-auto" src="{{asset('images/elements/ipad-pro.png')}}" alt="Card image cap" width="50" height="100%" style="min-height: 89px !important;max-height: 89px !important;">
-				            </div>
-				            <div class="card-body p-50">
-				              <div class="app-file-recent-details">
-				                <div class="app-file-name font-size-small font-weight-bold"><a href="">Felecia Resume.pdf</a></div>
-				                <div class="app-file-size font-size-small text-muted mb-25">12.85kb</div>
-				                <div class="app-file-last-access font-size-small text-muted">Last accessed : 3 hours ago</div>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
-			      	</div>
-			    </div>
-			</div>
-		    <!-- App File - Recent Accessed Files Section Ends -->
+            <div class="row">
+            	<div class="col-12" id="reportes">
+            		
+            	</div>
+            	
+            </div>
 
 			          
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+          <button type="button" class="btn btn-light-cmetal" data-dismiss="modal">
             <i class="bx bx-x d-block d-sm-none"></i>
-            <span class="d-none d-sm-block">Close</span>
+            <span class="d-none d-sm-block">{{ __('messages.cerrar') }}</span>
           </button>
-          <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+          {{-- <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
             <i class="bx bx-check d-block d-sm-none"></i>
             <span class="d-none d-sm-block">Accept</span>
+          </button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="modal fade text-left w-100" id="modal-reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel20" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel21">Reportar</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="bx bx-x"></i>
           </button>
+        </div>
+        <div class="modal-body">
+         		
+			<form class="form" method="POST" autocomplete="off" id="form-reporte" enctype="multipart/form-data">
+				{{ csrf_field() }}
+              	<div class="form-body">
+	                <div class="row">
+	                  <div class="col-md-6 col-12">
+	                    <div class="form-label-group">
+	                      <input type="number" min="0.01" step="0.01" class="form-control {{ ($errors->has('metrado')) ? 'is-invalid' : '' }}" name="metrado" id="metrado" placeholder="{{ __('messages.metradoRealizado') }}">
+	                      <label for="last-name-column">{{ __('messages.metradoRealizado') }}</label>
+	                      	@if ($errors->has('metrado'))
+								<div class="invalid-feedback">
+			                    	<i class="bx bx-radio-circle"></i>
+		                    		{{ $errors->first('metrado') }}
+			                  	</div>
+							@endif
+	                    </div>
+	                  </div>
+	                  <div class="col-md-6 col-12">
+	                    <div class="form-label-group">
+	                      <input type="date"   class="form-control {{ ($errors->has('fecha')) ? 'is-invalid' : '' }}" name="fecha" id="fecha" >
+	                      <label for="last-name-column">{{ __('messages.fecha') }}</label>
+	                      	@if ($errors->has('fecha'))
+								<div class="invalid-feedback">
+			                    	<i class="bx bx-radio-circle"></i>
+		                    		{{ $errors->first('fecha') }}
+			                  	</div>
+							@endif
+	                    </div>
+	                  </div>
+						<div class="col-md-12 col-12">
+	                    	<div class="form-label-group">
+	                      		<input type="file"   class="form-control {{ ($errors->has('archivo')) ? 'is-invalid' : '' }}" multiple="" name="archivo[]" id="archivo" accept="image/*,application/pdf,.xls,.xl,doc,docx">
+	                      		<label for="last-name-column">{{ __('messages.archivo') }}</label>
+		                      	@if ($errors->has('archivo'))
+									<div class="invalid-feedback">
+				                    	<i class="bx bx-radio-circle"></i>
+			                    		{{ $errors->first('archivo') }}
+				                  	</div>
+								@endif
+	                    	</div>
+	                  	</div>
+
+	                  
+	                {{--   <div class="col-12 d-flex justify-content-end mt-1">
+
+	                  </div> --}}
+	                </div>
+              	</div>
+		
+        </div>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-cmetal">{{ __('messages.guardar') }}</button>
+          <button type="button" class="btn btn-light-cmetal" data-dismiss="modal">
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">{{ __('messages.cerrar') }}</span>
+          </button>
+            </form>       
+          {{-- <button type="button" class="btn btn-primary ml-1" data-dismiss="modal">
+            <i class="bx bx-check d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Accept</span>
+          </button> --}}
         </div>
       </div>
     </div>
@@ -343,13 +390,17 @@
 @push('css')
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendors/css/tables/datatable/datatables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/pages/app-file-manager.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/file-uploaders/dropzone.css') }}">
     <!-- END: Page CSS-->
 @endpush
 
 
 @push('scripts')
+<script src="{{ asset('vendors/js/extensions/dropzone.min.js') }}"></script>
+<script src="{{ asset('vendors/js/ui/prism.min.js') }}"></script>
 <script src="{{ asset('js/scripts/extensions/ext-component-block-ui.js') }}"></script>
 <script src="{{ asset('js/scripts/pages/app-file-manager.js') }}"></script>
+<script src="{{ asset('js/scripts/extensions/dropzone.js') }}"></script>
    <script>
    		function block() {
 		  $.blockUI({
@@ -383,12 +434,15 @@
    				.done(function(data) {
    					console.log("success");
    					if(data.success == true){
-   						$('.modal-title').html(data.actividad.nombre);
+   						$('#myModalLabel20').html(data.actividad.nombre);
    						$('#descripcion').html(data.actividad.descripcion);
-   						$('#metrado').html(data.actividad.metrado);
+   						$('#metradoT').html(data.actividad.metrado);
+   						$('#metradoR').html(data.reportes);
    						$('#precio').html(data.actividad.precio);
-   						$('#precioTotal').html(data.actividad.metrado*data.actividad.precio);
+   						var precoT = data.actividad.metrado*data.actividad.precio;
+   						$('#precioTotal').html(precoT.toFixed(2));
 
+   						$('#reportes').html(data.r);
    						unBlock()
    						$('#modal-actividades').modal('show');
    					}
@@ -401,6 +455,22 @@
    				.always(function() {
    					console.log("complete");
    				});
+   				
+   			});
+
+   			$(document).on('click', '.modal-reporte', function(event) {
+   				event.preventDefault();
+   				$('#form-reporte').trigger("reset");
+   				block()
+   				var uri = $(this).data('uri');
+   				$('#form-reporte').attr('action', uri);
+   				$('#myModalLabel21').html('Reporte - '+$(this).data('actividad'));
+   				if($(this).data('max') == 0){
+   					$('#metrado').attr('disabled','disabled');
+   				}
+   				$('#metrado').attr('max',$(this).data('max'));
+   				unBlock()
+   				$('#modal-reporte').modal('show');
    				
    			});
    		});

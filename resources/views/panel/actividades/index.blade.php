@@ -24,7 +24,7 @@
 			<a href="{{ route('sectores',['id' => $proyecto->id]) }}">{{ __('messages.sectores') }}   </a>        
 		</li>
 		<li class="breadcrumb-item active">
-			{{ __('messages.sector') }}         
+			{{ $sector->nombre }}         
 		</li>
   	</ol>
 </div>
@@ -43,7 +43,7 @@
       			<div class="heading-elements">
         			<ul class="list-inline mb-0">
           				<li>
-            				<a href="{{ route('sectores.actividades.create',['id' => $proyecto->id]) }}" role="button" class="cmetal">
+            				<a href="{{ route('sectores.actividades.create',['id' => $sector->id]) }}" role="button" class="cmetal">
               					<i class="bx bx-plus-circle"></i>
               					{{ __('messages.newActividad') }}
             				</a>

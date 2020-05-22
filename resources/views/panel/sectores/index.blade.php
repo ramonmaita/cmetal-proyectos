@@ -55,9 +55,9 @@
 			{{-- <div class="card-columns"> --}}
 				<div class="row match-height">
 				    <div class="col-12">
-				      <div class="card-deck-wrapper">
-				        <div class="card-deck">
-				          <div class="row no-gutters">
+				      {{-- <div class="card-deck-wrapper">
+				        <div class="card-deck"> --}}
+				          <div class="row">
   		@endif
 							@forelse($sectores as $sector)
 								<div class="col-md-3 col-sm-6 mb-sm-1">
@@ -81,8 +81,8 @@
 							@endforelse
 		@if (count($sectores) > 0)
 							</div>
-						</div>
-					</div>
+						{{-- </div>
+					</div> --}}
 				</div>
 
 			</div>

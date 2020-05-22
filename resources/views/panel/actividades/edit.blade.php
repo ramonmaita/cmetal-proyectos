@@ -1,7 +1,7 @@
 @extends('panel.app')
 
 @section('titulo_page')
-{{ __('messages.newActividad') }}  
+{{ __('messages.editActividad') }}  
 @endsection
 @section('proyectos','active')
 
@@ -18,16 +18,16 @@
 			<a href="{{ route('proyectos.index') }}">{{ __('messages.projects') }}</a>            
 		</li>
 		<li class="breadcrumb-item ">
-			<a href="{{ route('proyectos.show',['id' => $sector->Proyecto->id]) }}">{{ $sector->Proyecto->nombre }}</a>        
+			<a href="{{ route('proyectos.show',['id' => $actividad->Sector->Proyecto->id]) }}">{{ $actividad->Sector->Proyecto->nombre }}</a>        
 		</li>
 		<li class="breadcrumb-item ">
-			<a href="{{ route('sectores',['id' => $sector->Proyecto->id]) }}">{{ __('messages.sectores') }}   </a>        
+			<a href="{{ route('sectores',['id' => $actividad->Sector->Proyecto->id]) }}">{{ __('messages.sectores') }}   </a>        
 		</li>
 		<li class="breadcrumb-item ">
-			<a href="{{ route('sectores.actividades.index',['id' => $sector->id]) }}">{{ $sector->nombre }}   </a>        
+			<a href="{{ route('sectores.actividades.index',['id' => $actividad->Sector->id]) }}">{{ $actividad->Sector->nombre }}   </a>        
 		</li>
 		<li class="breadcrumb-item active">
-			{{ __('messages.newActividad') }}         
+			{{ __('messages.editActividad') }}         
 		</li>
   	</ol>
 </div>
@@ -39,7 +39,7 @@
 	<div class="col-12">
   		<div class="card">
     		<div class="card-header">
-      			<h4 class="card-title">{{ __('messages.newActividad') }} </h4>
+      			<h4 class="card-title">{{ __('messages.editActividad') }} </h4>
       			<a class="heading-elements-toggle">
         			<i class='bx bx-dots-vertical font-medium-3'></i>
       			</a>
@@ -49,7 +49,7 @@
         			<div class="row">
           				<div class="col-sm-12">
           					@include('alertas')
-            				<form class="form" method="POST" action="{{ route('sectores.actividades.store',['id'=>$sector->id]) }}" autocomplete="off">
+            				<form class="form" method="POST" action="{{ route('sectores.actividades.update',['id'=>$actividad->id]) }}" autocomplete="off">
             					{{ csrf_field() }}
 				              	<div class="form-body">
 					                <div class="row">
@@ -59,7 +59,7 @@
 					                      <select name="unidad_id" id="unidad_id" class="form-control  {{ ($errors->has('unidad_id')) ? 'is-invalid' : '' }}">
 					                      	<option value="" data-precio="0.00"></option>
 					                      	@forelse($unidades as $unidad)
-					                      		<option value="{{ $unidad->id }}" data-precio="{{ $unidad->precio }}">{{ $unidad->nombre }}</option>
+					                      		<option value="{{ $unidad->id }}" data-precio="{{ $unidad->precio }}" {{ ($actividad->unidad_id == $unidad->id) ? 'selected' : '' }} >{{ $unidad->nombre }}</option>
 					                      	@empty
 												<option value="">{{ __('messages.sinUnidades') }}</option>
 					                      	@endforelse
@@ -74,7 +74,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.001"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" id="precio" readonly="true">
+					                      <input type="number" min="0.001"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" id="precio" readonly="true" value="{{ $actividad->precio }}">
 					                      <label for="last-name-column">{{ __('messages.precio') }}</label>
 					                      	@if ($errors->has('precio'))
 												<div class="invalid-feedback">
@@ -86,7 +86,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group">
-					                      <input type="text" class="form-control  {{ ($errors->has('nombre_actividad')) ? 'is-invalid' : '' }}" id="nombre_actividad" placeholder="{{ __('messages.nombre') }}" name="nombre_actividad">
+					                      <input type="text" class="form-control  {{ ($errors->has('nombre_actividad')) ? 'is-invalid' : '' }}" id="nombre_actividad" placeholder="{{ __('messages.nombre') }}" name="nombre_actividad"  value="{{ $actividad->nombre }}">
 					                      <label for="nombre_actividad">{{ __('messages.nombre') }}</label>
 					                      	@if ($errors->has('nombre_actividad'))
 												<div class="invalid-feedback">
@@ -98,8 +98,8 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group">
-					                      <input type="text" id="descripcion" class="form-control  {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcion') }}">
-					                      <label for="descripcion">{{ __('messages.descripcion') }}</label>
+					                      <input type="text" id="descripcion" class="form-control  {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcion') }}"  value="{{ $actividad->descripcion }}">
+					                      <label for="descripcion">{{ __('messages.descripcionProyecto') }}</label>
 					                      	@if ($errors->has('descripcion'))
 												<div class="invalid-feedback">
 							                    	<i class="bx bx-radio-circle"></i>
@@ -110,7 +110,7 @@
 					                  </div>
 					                  <div class="col-md-4 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.01" step="0.01" id="metrado"  class="form-control {{ ($errors->has('metrado')) ? 'is-invalid' : '' }}" name="metrado" placeholder="{{ __('messages.metrado') }}">
+					                      <input type="number" min="0.01" step="0.01" id="metrado"  class="form-control {{ ($errors->has('metrado')) ? 'is-invalid' : '' }}" name="metrado" placeholder="{{ __('messages.metrado') }}"  value="{{ $actividad->metrado }}">
 					                      <label for="metrado">{{ __('messages.metrado') }}</label>
 											@if ($errors->has('metrado'))
 												<div class="invalid-feedback">
@@ -122,7 +122,7 @@
 					                  </div>
 					                  <div class="col-md-4 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.01" step="0.01" id="precioTotal"  class="form-control {{ ($errors->has('precioTotal')) ? 'is-invalid' : '' }}" name="precioTotal" placeholder="{{ __('messages.precioTotal') }}" readonly="true">
+					                      <input type="number" min="0.01" step="0.01" id="precioTotal"  class="form-control {{ ($errors->has('precioTotal')) ? 'is-invalid' : '' }}" name="precioTotal" placeholder="{{ __('messages.precioTotal') }}" readonly="true" value="{{ round($actividad->metrado*$actividad->precio,2) }}">
 					                      <label for="precioTotal">{{ __('messages.precioTotal') }}</label>
 											@if ($errors->has('precioTotal'))
 												<div class="invalid-feedback">
@@ -135,7 +135,7 @@
 					                  <div class="col-md-4 col-12">
 					                    <div class="">
 					                      <label for="estatus">{{ __('messages.estatus') }}</label>
-					                      <select name="estatus" id="estatus" class="form-control  {{ ($errors->has('estatus')) ? 'is-invalid' : '' }}">
+					                      <select name="estatus" id="estatus" class="form-control  {{ ($errors->has('estatus')) ? 'is-invalid' : '' }}" {{ ($actividad->unidad_id == 1) ? 'selected' : '' }}>
 					                      	<option value="1">{{ __('messages.activo') }}</option>
 					                      </select>
 					                      	@if ($errors->has('estatus'))
@@ -170,7 +170,7 @@
 
 @push('scripts')
    	<script>
-		$('#unidad_id').change(function(event) {
+   		$('#unidad_id').change(function(event) {
 			var precio = $(this).find(':selected').attr('data-precio');
 			$('#precio').val(precio);
 			console.log(precio);

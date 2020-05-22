@@ -89,6 +89,8 @@
         			<div class="row">
           				<div class="col-sm-12">
             				{{ __('messages.welcome' )}}
+
+                    {{-- <img src="data:image/png;base64," alt=""> --}}
           				</div>
         			</div>
       			</div>

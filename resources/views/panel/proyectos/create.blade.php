@@ -106,6 +106,8 @@
 					                      <label for="estatus">{{ __('messages.estatus') }}</label>
 					                      <select name="estatus" id="estatus" class="form-control  {{ ($errors->has('estatus')) ? 'is-invalid' : '' }}">
 					                      	<option value="1">{{ __('messages.activo') }}</option>
+					                      	<option value="2">{{ __('messages.pausado') }}</option>
+					                      	<option value="3">{{ __('messages.terminado') }}</option>
 					                      </select>
 					                      	@if ($errors->has('estatus'))
 												<div class="invalid-feedback">

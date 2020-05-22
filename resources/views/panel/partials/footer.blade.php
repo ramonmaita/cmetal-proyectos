@@ -1,3 +1,6 @@
+<div class="buy-now">
+    <a href="{{ url()->previous() }}"  class="btn btn-cmetal"><i class="bx bx-left-arrow-alt"></i></a>
+  </div>
 <footer class="footer footer-light footer-static">
     <p class="clearfix mb-0">
       <span class="float-left d-inline-block">2020 &copy; CMETAL PERÚ</span>

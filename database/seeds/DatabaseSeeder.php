@@ -22,5 +22,32 @@ class DatabaseSeeder extends Seeder
             'estatus' => 1,
             'tipo' => 1
         ]);
+
+        User::insert([
+            'nombre' => 'Admin',
+            'apellido' => 'CMETAL',
+            'email' => 'admin@cmetal.com.pe',
+            'password' => bcrypt('admincmetal'),
+            'estatus' => 1,
+            'tipo' => 1
+        ]);
+
+        User::insert([
+            'nombre' => 'Supervisor',
+            'apellido' => 'CMETAL',
+            'email' => 'supervisor@cmetal.com.pe',
+            'password' => bcrypt('admincmetal'),
+            'estatus' => 1,
+            'tipo' => 2
+        ]);
+
+        User::insert([
+            'nombre' => 'Cliente',
+            'apellido' => 'CMETAL',
+            'email' => 'cliente@cmetal.com.pe',
+            'password' => bcrypt('admincmetal'),
+            'estatus' => 1,
+            'tipo' => 3
+        ]);
     }
 }

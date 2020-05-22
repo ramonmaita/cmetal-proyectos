@@ -12,6 +12,10 @@ use App\Proyecto;
 
 use DB;
 
+use Dompdf\Dompdf;
+
+use Auth;
+
 class ProyectosController extends Controller
 {
     /**
@@ -29,23 +33,25 @@ class ProyectosController extends Controller
 
     public function getData()
     {
-        $model =  Proyecto::where('estatus',1)->get();
+        // $model =  Proyecto::where('estatus',1)->get();
+        if (Auth::user()->tipo == 1 ) {
+            $model =  Proyecto::all();
+        }else{
+            $model =  Auth::user()->Proyectos;
+        }
 
         return DataTables::of($model)
             ->editColumn('estatus',function ($model)
             {
                 switch ($model->estatus) {
-                    case 0:
-                        return '<span class="badge badge-pill badge-success">'.__('messages.finalizado').'</span>';
-                        break;
                     case 1:
                         return '<span class="badge badge-pill badge-info">'.__('messages.activo').'</span>';
                         break;
                     case 2:
-                        return '<span class="badge badge-pill badge-warning">'.__('messages.suspendido').'</span>';
+                        return '<span class="badge badge-pill badge-warning">'.__('messages.pausado').'</span>';
                         break;
-                    case 1:
-                        return '<span class="badge badge-pill badge-danger">'.__('messages.cancelado').'</span>';
+                    case 3:
+                        return '<span class="badge badge-pill badge-success">'.__('messages.terminado').'</span>';
                         break;
                     default:
                         return '<span class="badge badge-pill badge-primary">'.__('messages.espera').'</span>';
@@ -54,13 +60,19 @@ class ProyectosController extends Controller
             })
             ->addColumn('acciones',function ($model)
             {
-
-                return '
-                <a href="'.route('sectores',['id' => $model->id]).'" class="btn btn-icon   btn-light-cmetal "><i class="bx bxs-plus-circle"></i></a>
-                <a href="'.route('proyectos.show',['id' => $model->id]).'" class="btn  btn-icon btn-cmetal "><i class="bx bxs-show"></i></a>
-                <a href="'.route('proyectos.edit',['id' => $model->id]).'" class="btn  btn-icon btn-dark "><i class="bx bxs-pencil"></i></a>
-            
-                ';
+                if (Auth::user()->tipo == 1 ) {
+                    return '
+                    <a href="'.route('sectores',['id' => $model->id]).'" class="btn btn-icon   btn-light-cmetal "><i class="bx bxs-plus-circle"></i></a>
+                    <a href="'.route('proyectos.show',['id' => $model->id]).'" class="btn  btn-icon btn-cmetal "><i class="bx bxs-show"></i></a>
+                    <a href="'.route('proyectos.edit',['id' => $model->id]).'" class="btn  btn-icon btn-dark "><i class="bx bxs-pencil"></i></a>
+                
+                    ';
+                }else{
+                     return '
+                    <a href="'.route('proyectos.show',['id' => $model->id]).'" class="btn  btn-icon btn-cmetal "><i class="bx bxs-show"></i></a>
+                
+                    ';
+                }
             }) 
             ->rawColumns(['action'])
             ->escapeColumns([])
@@ -77,6 +89,22 @@ class ProyectosController extends Controller
         return view('panel.proyectos.create');
     }
 
+    public function pdf($id)    
+    {
+        $proyecto = Proyecto::find($id);
+        $dompdf = new Dompdf();
+
+        $html = view('panel.proyectos.pdf',['proyecto' => $proyecto]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('letter');
+        $dompdf->render();
+        $font = $dompdf->getFontMetrics()->get_font("helvetica");
+                                        //ancho alto 
+        $dompdf->getCanvas()->page_text(500, 740, "Pág. {PAGE_NUM} de {PAGE_COUNT}", $font, 10, array(0,0,0));
+        return $dompdf->stream("Proyecto", array("Attachment" => false));
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -85,7 +113,7 @@ class ProyectosController extends Controller
      */
     public function store(ProyectoStoreRequest $request)
     {
-         try {
+        try {
             DB::beginTransaction();
             Proyecto::create([
                 'fecha_inicio' => $request->fecha_inicio,
@@ -102,8 +130,8 @@ class ProyectosController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with([
-                'errorm'     => $e->getMessage(),
-                'error' => true
+                'error'     => $e->getMessage(),
+                // 'error' => true
             ]);
         }
     }

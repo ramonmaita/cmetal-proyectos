@@ -42,19 +42,28 @@
                 </li>
             </ul> --}}
 		</li>
-    	<li class="navigation-header"><span>Apps</span></li>
+    	<li class="navigation-header"><span>Modulos</span></li>
         <li class="nav-item @yield('proyectos')">
 		    <a href="{{ route('proyectos.index') }}" >
                 <i class="menu-livicon" data-icon="notebook"></i>
                 <span class="menu-title">{{ __('messages.projects') }}</span>
             </a>
         </li>
+        @if(Auth::user()->tipo == 1)
         <li class="nav-item @yield('metrados')">
 		    <a href="{{ route('metrados.index') }}" >
                 <i class="menu-livicon" data-icon="morph-map"></i>
                 <span class="menu-title">{{ __('messages.metrados') }}</span>
             </a>
         </li>
+
+         <li class="nav-item @yield('usuarios')">
+		    <a href="{{ route('usuarios.index') }}" >
+                <i class="menu-livicon" data-icon="users"></i>
+                <span class="menu-title">{{ __('messages.usuarios') }}</span>
+            </a>
+        </li>
+        @endif
         {{-- <li class="nav-item ">
             <a href="app-chat.html" >
                 <i class="menu-livicon" data-icon="comments"></i>

@@ -39,6 +39,7 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
     })->name('panel.index');
 
     Route::group(['prefix' => 'proyectos'], function() {
+        Route::get('{id}/pdf', 'ProyectosController@pdf')->name('proyectos.pdf');
         Route::get('{id}/sectores','SectoresController@index')->name('sectores');
         Route::get('{id}/sectores/create','SectoresController@create')->name('sectores.create');
         Route::get('sector/{id}/edit', 'SectoresController@edit')->name('sectores.edit');
@@ -49,7 +50,8 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
             Route::get('{id}/actividades', 'ActividadesController@index')->name('actividades.index');
             Route::get('{id}/actividades/create', 'ActividadesController@create')->name('actividades.create');
             Route::post('guardar-actividad/{id}', 'ActividadesController@store')->name('actividades.store');
-            Route::get('actividad/{id}/edit', 'SectoresController@edit')->name('actividades.edit');
+            Route::get('actividad/{id}/edit', 'ActividadesController@edit')->name('actividades.edit');
+            Route::post('actualizar-actividad/{id}', 'ActividadesController@update')->name('actividades.update');
         });
     });
 
@@ -60,7 +62,14 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
 
     });
 
+    Route::post('guardar-reporte/{id}', 'ReportesController@store')->name('reportes.store');
+
     Route::resource('metrados', 'MetradosController');
+
+    
+
+    Route::resource('usuarios', 'UsuariosController');
+
 });
 
 

@@ -39,6 +39,18 @@
         html .pace .pace-progress {
             background: #fff;
         }
+        html body .form-label-group > input:focus:not(:placeholder-shown) ~ label,  html body .form-label-group textarea:focus:not(:placeholder-shown) ~ label, html body .form-label-group textarea:not(:active):not(:placeholder-shown) ~ label {
+            color: #5b1818 !important;
+            transition: all .25s ease-in-out;
+            opacity: 1;
+          }
+          .form-control:focus {
+            color: #5b1818;
+            background-color: #fff;
+            border-color: #5b1818;
+            outline: 0;
+            box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+          }
       </style>
   </head>
   <!-- END: Head-->
@@ -79,7 +91,7 @@
                             </center>
                           </div>
                           <hr>
-                          <form method="POST" action="{{ route('iniciar-sesion') }}">
+                          <form method="POST" action="{{ route('iniciar-sesion') }}" autocomplete="off">
                             {{ csrf_field() }}
                             <div class="form-group mb-50">
                               <label class="text-bold-600" for="exampleInputEmail1">{{ __('messages.email') }}</label>
@@ -118,7 +130,7 @@
                   <!-- right section image -->
                   <div class="col-md-6 d-md-block d-none text-center align-self-center">
                     <div class="card-content">
-                      <img class="img-fluid" src="{{ asset('images/pages/login2.png') }}" alt="branding logo" width="100%">
+                      <img class="img-fluid" src="{{ asset('images/pages/login.png') }}" alt="branding logo" width="100%">
                     </div>
                   </div>
                 </div>

@@ -1,9 +1,9 @@
 @extends('panel.app')
 
 @section('titulo_page')
-{{ __('messages.projects') }}  
+{{ __('messages.usuarios') }}  
 @endsection
-@section('proyectos','active')
+@section('usuarios','active')
 
 @section('breadcrumb')
 <div class="breadcrumb-wrapper col-12">
@@ -15,7 +15,7 @@
 			<a href="#">Card</a>
 		</li> --}}
 		<li class="breadcrumb-item active">
-			{{ __('messages.projects') }}            
+			{{ __('messages.usuarios') }}            
 		</li>
   	</ol>
 </div>
@@ -27,23 +27,21 @@
 	<div class="col-12">
   		<div class="card">
     		<div class="card-header">
-      			<h4 class="card-title">{{ __('messages.projects') }} </h4>
+      			<h4 class="card-title">{{ __('messages.usuarios') }} </h4>
       			<a class="heading-elements-toggle">
         			<i class='bx bx-dots-vertical font-medium-3'></i>
       			</a>
-      			@if(Auth::user()->tipo == 1)
       			<div class="heading-elements">
         			<ul class="list-inline mb-0">
           				<li>
-            				<a href="{{ route('proyectos.create') }}" role="button" class="cmetal">
+            				<a href="{{ route('usuarios.create') }}" role="button" class="cmetal">
               					<i class="bx bx-plus-circle"></i>
-              					{{ __('messages.newProject') }}
+              					{{ __('messages.newUsuario') }}
             				</a>
           				</li>
           				
         			</ul>
       			</div>
-      			@endif
     		</div>
     		<div class="card-content collapse show">
       			<div class="card-body">
@@ -54,10 +52,10 @@
               					<table class="table data-table">
 	                                <thead>
 	                                    <tr>
-	                                        <th>{{ __('messages.fechaInicio') }}</th>
-	                                        <th>{{ __('messages.fechaFin') }}</th>
-	                                        <th>{{ __('messages.nombreProyecto') }}</th>
-	                                        <th>{{ __('messages.direccionProyecto') }}</th>
+	                                        <th>{{ __('messages.nombres') }}</th>
+	                                        <th>{{ __('messages.apellidos') }}</th>
+	                                        <th>{{ __('messages.email') }}</th>
+	                                        <th>{{ __('messages.tipoUsuario') }}</th>
 	                                        <th>{{ __('messages.estatus') }}</th>
 	                                        <th>{{ __('messages.acciones') }}</th>
 	                                    </tr>
@@ -107,12 +105,12 @@
 			    },
 	            processing: true,
 	            serverSide: true,
-	            ajax: '{{ route('proyectos.index') }}',
+	            ajax: '{{ route('usuarios.index') }}',
 	            columns: [
-	                { data: 'fecha_inicio', name: 'fecha_inicio' },
-	                { data: 'fecha_fin', name: 'fecha_fin' },
 	                { data: 'nombre', name: 'nombre' },
-	                { data: 'direccion', name: 'direccion' },
+	                { data: 'apellido', name: 'apellido' },
+	                { data: 'email', name: 'email' },
+	                { data: 'tipo', name: 'tipo' },
 	                { data: 'estatus', name: 'estatus' },
 	                { data: 'acciones', name: 'acciones' },
 	            ]
