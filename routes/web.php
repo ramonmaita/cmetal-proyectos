@@ -31,6 +31,9 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
 	})->name('lenguaje');
 
     Route::get('/', function() {
+        if (Auth::user()->tipo != 1) {
+            return redirect()->route('proyectos.index');
+        }
         $proyectos = \App\Proyecto::count();
         $sectores = \App\Sector::count();
         $actividades = \App\Actividad::count();
@@ -45,6 +48,11 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
         Route::get('sector/{id}/edit', 'SectoresController@edit')->name('sectores.edit');
         Route::put('actualizar/{id}', 'SectoresController@update')->name('sectores.update');
         Route::post('guardar-sector/{id}', 'SectoresController@store')->name('sectores.store');
+
+        Route::post('nuevo-gasto/{id}', 'GastoController@store')->name('gastos.store');
+        Route::post('nueva-factura/{id}', 'FacturaController@store')->name('facturas.store');
+        Route::post('nueva-factura/{id}', 'FacturaController@store')->name('facturas.store');
+        Route::post('nuevo-deposito/{id}', 'DepositoController@store')->name('depositos.store');
 
         Route::prefix('sectores')->as('sectores.')->group(function () {
             Route::get('{id}/actividades', 'ActividadesController@index')->name('actividades.index');

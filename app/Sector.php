@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use App\Sector;
+
+use App\Actividad;
+
+use App\Reporte;
+
 class Sector extends Model
 {
 	protected $table ="sectores";
@@ -30,5 +36,27 @@ class Sector extends Model
        // $this->hasMany('App\Actividad')->sum('metrado');
        // $ida = $this->hasMany('App\Actividad')->pluck('id');
        // return 
+    }
+
+    public function total()
+    {
+        $t =  0;
+        foreach ($this->Actividades as $actividad) {
+            foreach ($actividad->Reportes as $reporte) {
+                $t += $reporte->metrado*$actividad->precio;
+            }
+        }
+        return $t;
+        // $a = DB::table('actividades')->where('sector_id',$this->id);
+        // $b =  DB::table('reportes')->where('actividad',$this->id)->get();
+        // return DB::select(DB::raw('SELECT reportes.metrado * actividades.precio AS monto FROM reportes, actividades WHERE actividades.id = reportes.actividad_id AND actividades.sector_id = :id'),['id' => $this->id]);
+        // return Sector::join('actividad','sector.id','=',$this->id)
+        //     ->join('reportes','actividad.id', '=', 'reportes.actividad_id')
+        //     ->select('*')
+        //     ->get();
+        // return Actividad::join('reportes','actividad.id','=','reportes.actividad_id')
+        //     ->join('sectores','actividad.sector_id', '=', $this->id)
+        //     ->select('*')
+        //     ->get();
     }
 }

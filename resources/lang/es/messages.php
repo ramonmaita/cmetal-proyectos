@@ -70,7 +70,10 @@ return [
 	'cerrar' => 'Cerrar',
 	'reportar' => 'Reportar',
 	'sinUnidades' => 'No hay unidades de metrado registradas',
-
+	'gastosGenerales' => 'Gastos Generales',
+	'gastosEstimado' => 'Gasto Estimado',
+	'utilidad' => 'Utilidad',
+	'descuento' => 'DESC COM.',
 
 
 ];

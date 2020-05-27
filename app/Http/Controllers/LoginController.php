@@ -37,7 +37,11 @@ class LoginController extends Controller
         }
     	if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
     		if (Auth::user()->estatus == 1) {
-                return redirect()->intended('/panel');
+                if (Auth::user()->tipo == 1) {
+                    return redirect()->intended('/panel');
+                }else{
+                    return redirect()->intended('/panel/proyectos');
+                }
             } else {
                 Auth::logout();
                 return redirect('/')->with('m_error','Su cuenta no se encuentra activa, pongase a en contacto con el administrador del sitio.');

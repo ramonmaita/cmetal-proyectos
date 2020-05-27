@@ -20,6 +20,10 @@ class CreateProyectosTable extends Migration
             $table->string('nombre');
             $table->text('direccion');
             $table->text('descripcion');
+            $table->float('gastos_generales');
+            $table->float('utilidad');
+            $table->float('descuento')->default(0);
+            $table->float('gasto_estimado');
             $table->integer('estatus')->default(0);
             $table->timestamps();
         });

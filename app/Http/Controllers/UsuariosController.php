@@ -68,8 +68,6 @@ class UsuariosController extends Controller
             {
 
                 return '
-                <a href="'.route('sectores',['id' => $model->id]).'" class="btn btn-icon   btn-light-cmetal "><i class="bx bxs-plus-circle"></i></a>
-                <a href="'.route('proyectos.show',['id' => $model->id]).'" class="btn  btn-icon btn-cmetal "><i class="bx bxs-show"></i></a>
                 <a href="'.route('usuarios.edit',['id' => $model->id]).'" class="btn  btn-icon btn-dark "><i class="bx bxs-pencil"></i></a>
             
                 ';

@@ -10,6 +10,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 use App\Proyecto;
 
+use App\User;
+
+use App\UsuarioProyecto;
+
 use DB;
 
 use Dompdf\Dompdf;
@@ -86,7 +90,7 @@ class ProyectosController extends Controller
      */
     public function create()
     {
-        return view('panel.proyectos.create');
+        return view('panel.proyectos.create',['supervisores' => User::where('tipo',2)->get(), 'clientes' => User::where('tipo',3)->get(), ]);
     }
 
     public function pdf($id)    
@@ -115,14 +119,31 @@ class ProyectosController extends Controller
     {
         try {
             DB::beginTransaction();
-            Proyecto::create([
+            $proyecto = Proyecto::create([
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,
                 'nombre' => $request->nombre_proyecto,
                 'direccion' => $request->direccion,
                 'descripcion' => $request->descripcion,
+                'gastos_generales' => $request->gastos,
+                'utilidad' => $request->utilidad,
+                'descuento' => $request->descuento,
+                'gasto_estimado' => $request->gastosE,
                 'estatus' => $request->estatus,
             ]);
+
+            if (isset($request->supervisor) && $request->supervisor != '') {
+                UsuarioProyecto::create([
+                    'user_id' => $request->supervisor,
+                    'proyecto_id' => $proyecto->id
+                ]);
+            }
+            if (isset($request->cliente) && $request->cliente != '') {
+                UsuarioProyecto::create([
+                    'user_id' => $request->cliente,
+                    'proyecto_id' => $proyecto->id
+                ]);
+            }
             DB::commit();
             return redirect()->route('proyectos.index')->with([
                 'success' => __('messages.operacionExitosa')
@@ -165,7 +186,7 @@ class ProyectosController extends Controller
         $proyecto = Proyecto::find($id);
 
         if ($proyecto) {
-            return view('panel.proyectos.edit',['proyecto' => $proyecto]);
+            return view('panel.proyectos.edit',['proyecto' => $proyecto,'supervisores' => User::where('tipo',2)->get(), 'clientes' => User::where('tipo',3)->get(),]);
         } else {
             return abort(404);
         }
@@ -190,6 +211,10 @@ class ProyectosController extends Controller
                 'nombre' => $request->nombre_proyecto,
                 'direccion' => $request->direccion,
                 'descripcion' => $request->descripcion,
+                'gastos_generales' => $request->gastos,
+                'utilidad' => $request->utilidad,
+                'descuento' => $request->descuento,
+                'gasto_estimado' => $request->gastosE,
                 'estatus' => $request->estatus,
             ]);
             DB::commit();
