@@ -85,6 +85,12 @@ return [
 	'monto' => 'Monto',
 	'facturaEstimada' => 'Factura Estimada',
 	'depositoEstimado' => 'Depositos Estimados',
-
+	'textResetPass' => 'Escriba el correo electronico con el que se registro al cual sera enviado un enlace para restablecer su contraseña',
+	'recordePass' => 'Recordé mi contraseña',
+	'enviarLink' => 'Enviar Enlace',
+	'restablecerPass' => 'Restablecer su Contraseña',
+	'newPass' => 'Nueva Contraseña',
+	'confirmPass' => 'Confirmar nueva contraseña',
+	'resetPass' => 'Restablecer Mi Contraseña',
 
 ];

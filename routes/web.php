@@ -23,6 +23,12 @@ Route::post('login', 'LoginController@login')->name('iniciar-sesion');
 Route::get('logout', 'LoginController@logout')->name('logout');
 
 
+Route::get('recuperar-contrasena', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('enviar-email-recuperacion', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+
+Route::post('resetear-contrasena', 'Auth\ResetPasswordController@reset')->name('password.update');
+Route::get('resetear-contrasena/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+
 Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
 	Route::get('lenguaje/{lenguaje}', function($lenguaje) {
 	    Session::put('locale', $lenguaje);
@@ -74,6 +80,7 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
     
 
     Route::resource('actividades', 'ActividadesController');
+    Route::resource('comentarios', 'ComentarioController');
     Route::resource('proyectos', 'ProyectosController');
     Route::resource('metrados', 'MetradosController')->middleware('admin');
     Route::resource('usuarios', 'UsuariosController');

@@ -48,4 +48,10 @@ class User extends Authenticatable
         return $this->hasMany('App\UsuarioProyecto');
 
     }
+
+    public function Comentarios()
+    {
+        return $this->hasMany('App\Comentario');
+
+    }
 }

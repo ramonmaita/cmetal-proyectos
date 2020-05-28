@@ -18,6 +18,10 @@ class Proyecto extends Model
     {
         return $this->hasMany('App\UsuarioProyecto');
     }
+    public function Comentarios()
+    {
+        return $this->hasMany('App\Comentario');
+    }
     public function Sectores()
     {
     	return $this->hasMany('App\Sector');

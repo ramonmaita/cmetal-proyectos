@@ -88,6 +88,12 @@ return [
 	'monto' => 'Amount',
 	'facturaEstimada' => 'Estimated Invoice',
 	'depositoEstimado' => 'Estimated Deposits',
-
+	'textResetPass' => 'Write the email with which you registered to which a link will be sent to reset your password',
+	'recordePass' => 'I remembered my password',
+	'enviarLink' => 'Send Link',
+	'restablecerPass' => 'Reset your Password',
+	'newPass' => 'New Password',
+	'confirmPass' => 'Confirm New Password',
+	'resetPass' => 'Reset My Password',
 
 ];

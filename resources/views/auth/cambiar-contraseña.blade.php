@@ -74,12 +74,8 @@
                     <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
                       <div class="card-header pb-1">
                         <div class="card-title">
-                          <h4 class="text-center mb-2">{{ __('messages.produccionProyectos') }}</h4>
-                          <div class="divider">
-                            <div class="divider-text text-uppercase text-muted">
-                              <small></small>
-                            </div>
-                          </div>
+                          <h4 class="text-center">{{ __('messages.produccionProyectos') }}</h4>
+                          <hr>
                         </div>
                       </div>
                       <div class="card-content">
@@ -92,43 +88,47 @@
                           </div>
                           <hr>
                           @include('alertas')
-                          <form method="POST" action="{{ route('iniciar-sesion') }}" autocomplete="off">
+                          @if (session('status'))
+                              <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                  {{ session('status') }}
+                              </div>
+                          @endif
+                          @if ($errors->any())
+                              <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                  {{ $errors->first() }}
+                              </div>
+                          @endif
+                          	<div class="text-muted text-center mb-2">
+                          		<small>{{ __('messages.restablecerPass') }}</small>
+                          	</div>
+                          <form method="POST" action="{{ route('password.update') }}" autocomplete="off">
                             {{ csrf_field() }}
-                            <div class="form-group mb-50">
-                              <label class="text-bold-600" for="exampleInputEmail1">{{ __('messages.email') }}</label>
-                              <input type="email" class="form-control  {{ ($errors->has('email')) ? 'is-invalid' : '' }}" id="exampleInputEmail1" name="email" placeholder="{{ __('messages.email') }}">
-                              @if ($errors->has('email'))
+                            <input type="hidden" name="token" value="{{ $token }}">
+			                      <div class="form-group">
+                                <label class="text-bold-600" for="exampleInputPassword1">{{ __('messages.newPass') }}</label>
+                                <input type="password" name="password" class="form-control {{ ($errors->has('password')) ? 'is-invalid' : '' }}" id="exampleInputPassword1"
+                                      placeholder="{{ __('messages.newPass') }}">
+                              @if ($errors->has('password'))
                                 <div class="invalid-feedback">
                                     <i class="bx bx-radio-circle"></i>
-                                    {{ $errors->first('email') }}
+                                    {{ $errors->last('password') }}
                                   </div>
                               @endif
                             </div>
-                            <div class="form-group">
-                              <label class="text-bold-600" for="exampleInputPassword1">{{ __('messages.password') }}</label>
-                              <input type="password" name="password" class="form-control {{ ($errors->has('password')) ? 'is-invalid' : '' }}" id="exampleInputPassword1" placeholder="{{ __('messages.password') }}">
-                               @if ($errors->has('password'))
-                                <div class="invalid-feedback">
-                                    <i class="bx bx-radio-circle"></i>
-                                    {{ $errors->first('password') }}
-                                  </div>
-                              @endif
+                            <div class="form-group mb-2">
+                                  <label class="text-bold-600" for="exampleInputPassword2"> {{ __('messages.confirmPass') }}</label>
+                                  <input type="password" class="form-control {{ ($errors->has('password_confirmation')) ? 'is-invalid' : '' }}" id="exampleInputPassword2" name="password_confirmation" 
+                                      placeholder="{{ __('messages.confirmPass') }}">
+                                  @if ($errors->has('password_confirmation'))
+                                    <div class="invalid-feedback">
+                                        <i class="bx bx-radio-circle"></i>
+                                        {{ $errors->first('password_confirmation') }}
+                                      </div>
+                                  @endif
                             </div>
-                            <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
-                              <div class="text-left">
-                                {{-- <div class="checkbox checkbox-sm">
-                                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                  <label class="checkboxsmall" for="exampleCheck1">
-                                    <small>Keep me logged in</small>
-                                  </label>
-                                </div> --}}
-                              </div>
-                              <div class="text-right">
-                                <a href="{{ route('password.request') }}" class="card-link"><small>{{ __('messages.olvidoPassword') }}</small></a>
-                              </div>
-                            </div>
-                            <button role="submit" class="btn btn-cmetal glow w-100 position-relative">{{ __('messages.login') }}
-                              <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
+                            <button type="submit" class="btn btn-cmetal glow position-relative w-100">{{ __('messages.resetPass') }}<i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
                             </button>
                           </form>
                           <hr>

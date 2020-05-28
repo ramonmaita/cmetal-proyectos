@@ -57,6 +57,13 @@
 	<button type="button" class="close" data-dismiss="alert">×</button>	
 
 	{{ __('messages.errores') }}
+	{{-- {{ $errors->first() }} --}}
+	{{-- <ul>
+		
+	@foreach ($errors->all() as $error)
+		<li>{{$error}}</li>
+	@endforeach
+	</ul> --}}
 
 </div>
 

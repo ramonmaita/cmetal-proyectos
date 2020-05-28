@@ -45,6 +45,21 @@
             $estatus = '<span class="badge badge-pill badge-primary">'.__('messages.espera').'</span>';
             break;
     }
+
+    function tipo_usuario($estatus)
+    {
+    	switch ($estatus) {
+            case 1:
+	            return '<span class="badge badge-pill badge-dark">'.__('messages.admin').'</span>';
+	            break;
+	        case 2:
+	            return '<span class="badge badge-pill badge-primary">'.__('messages.supervisor').'</span>';
+	            break;
+	        default:
+	            return '<span class="badge badge-pill badge-warning">'.__('messages.cliente').'</span>';
+	            break;
+        }
+    }
 @endphp
 @include('alertas')
 <div class="row">
@@ -352,6 +367,61 @@
 		  	</div>
 		</section>
 		@endif
+
+		<div class="card">
+			@forelse ($proyecto->Comentarios as $comentario)
+				<div class="card-content">
+	              	<div class="card-header user-profile-header">
+	              		<div class="avatar  mr-50 align-top mr-1 bg-warning bg-lighten-2">
+	                    	<span class="avatar-content"  width="32" height="32"><b>{{ substr($comentario->Usuario->nombre,0,1) }}{{ substr($comentario->Usuario->apellido,0,1) }}</b></span>
+	                  		{{-- <span class="avatar-status-online"></span> --}}
+	                  	</div>
+	                	
+	            		<div class="d-inline-block mt-25">
+	                  		<h6 class="mb-0 text-bold-500">{{$comentario->Usuario->nombre}} {{$comentario->Usuario->apellido}}</h6>
+	                  		<p class="text-muted">
+	                  			<small>{!! tipo_usuario($comentario->Usuario->tipo) !!}</small> - 
+	                  			<small>{{$comentario->updated_at}}</small>
+	                  		</p>
+	                	</div>
+	                	<i class="cursor-pointer bx bx-dots-vertical-rounded float-right"></i>
+	              	</div>
+	              	<div class="card-body py-0">
+	                	<p>{{$comentario->comentario}}</p>
+	              	</div>
+	            </div>
+	            <hr>
+	        @empty
+
+	        	{{-- <hr> --}}
+	            
+			@endforelse
+            
+            {{-- <hr> --}}
+        	<form action="{{ route('comentarios.store') }}" method="POST">
+        		@csrf
+        		<input type="hidden" name="proyecto_id" value="{{$proyecto->id}}">
+            	<div class="form-group row align-items-center px-1">
+	              	<div class="col-2 col-sm-1">
+	              		<div class="avatar mr-1 bg-warning bg-lighten-2">
+	                    	<span class="avatar-content"  width="32" height="32"><b>{{ substr(Auth::user()->nombre,0,1) }}{{ substr(Auth::user()->apellido,0,1) }}</b></span>
+	                  		<span class="avatar-status-online"></span>
+	                  	</div>
+	                	{{-- <div class="avatar">
+	                  		<img src="images/portrait/small/avatar-s-2.jpg" alt="avtar images" width="32" height="32">
+	                	</div> --}}
+	              	</div>
+            		
+	              	<div class="col-sm-10 col-8">
+	                	<textarea class="form-control" id="user-comment-textarea" name="comentario" rows="1" placeholder="comment.." style="height: 47px;"></textarea>
+	              	</div>
+	              	<div class="col-sm-1 col-2">
+	                	<button type="submit" class="btn btn-icon rounded-circle btn-cmetal mr-1 mt-2 mb-1"><i class="bx bxs-send"></i></button>
+	              	</div>
+        	    </div>
+        	</form>
+            <!-- user profile comments ends -->
+        </div>
 	</div>
 </div>
 
