@@ -146,12 +146,37 @@ return [
     */
 
     'attributes' => [
+        // proyectos
         'fecha_inicio' => 'start date',
         'fecha_fin' => 'end date',
         'nombre_proyecto' => 'project name',
         'direccion' => 'address',
         'descripcion' => 'description',
         'estatus' => 'status',
+
+        'gastos' => 'general expenses',
+        'utilidad' => 'usefulness',
+        'descuento' => 'commercial discounts',
+        'gastosE' => 'estimated expenseo',
+        // sectores
+        'nombre_sector' => 'sector name',
+        // actividades
+        'unidad_id' => 'metering unit',
+        'precio' => 'price',
+        'nombre_actividad' => 'name of the activity',
+        'metrado' => 'metered',
+        // metrados
+        'nombre_metrado' => 'metering unit',
+        // usuarios
+        'nombres' => 'names',
+        'apellidos' => 'surnames',
+        'email' => 'eamil',
+        'password' => 'password',
+        'password_confirmation' => 'repeat password',
+        'tipo_usuario' => 'type of user',
+        // otro
+        'supervisor' => 'supervisor',
+        'cliente' => 'client',
     ],
 
 ];

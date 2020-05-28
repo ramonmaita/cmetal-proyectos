@@ -91,15 +91,28 @@
                             </center>
                           </div>
                           <hr>
+                          @include('alertas')
                           <form method="POST" action="{{ route('iniciar-sesion') }}" autocomplete="off">
                             {{ csrf_field() }}
                             <div class="form-group mb-50">
                               <label class="text-bold-600" for="exampleInputEmail1">{{ __('messages.email') }}</label>
-                              <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="{{ __('messages.email') }}">
+                              <input type="email" class="form-control  {{ ($errors->has('email')) ? 'is-invalid' : '' }}" id="exampleInputEmail1" name="email" placeholder="{{ __('messages.email') }}">
+                              @if ($errors->has('email'))
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $errors->first('email') }}
+                                  </div>
+                              @endif
                             </div>
                             <div class="form-group">
                               <label class="text-bold-600" for="exampleInputPassword1">{{ __('messages.password') }}</label>
-                              <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="{{ __('messages.password') }}">
+                              <input type="password" name="password" class="form-control {{ ($errors->has('password')) ? 'is-invalid' : '' }}" id="exampleInputPassword1" placeholder="{{ __('messages.password') }}">
+                               @if ($errors->has('password'))
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $errors->first('password') }}
+                                  </div>
+                              @endif
                             </div>
                             <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
                               <div class="text-left">

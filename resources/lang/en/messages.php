@@ -37,7 +37,7 @@ return [
 	'nombreSector' => 'Sector Name',
 	'descripcion' => 'Description',
 	'metrado' => 'Metered',
-	'metrados' => 'Metered',
+	'metrados' => 'Metering Units',
 	'precio' => 'Price',
 	'nombreMetrado' => 'Name Metered',
 	'newMetrado' => 'New Metered',

@@ -147,11 +147,36 @@ return [
     */
 
     'attributes' => [
+        // proyectos
         'fecha_inicio' => 'fecha de inicio',
         'fecha_fin' => 'fecha de culminación',
         'nombre_proyecto' => 'nombre del proyecto',
-        'direccion' => 'dirección del proyecto',
+        'direccion' => 'ubicacion del proyecto',
         'descripcion' => 'descripcion',
+        'gastos' => 'gastos generales',
+        'utilidad' => 'utilidad',
+        'descuento' => 'descuento comercial',
+        'gastosE' => 'gasto estimado',
+        // sectores
+        'nombre_sector' => 'nombre del sector',
+        // actividades
+        'unidad_id' => 'unidad de metrado',
+        'precio' => 'precio',
+        'nombre_actividad' => 'nombre de la actividad',
+        'metrado' => 'metrado',
+        // metrados
+        'nombre_metrado' => 'unidad de metrado',
+        'estatus' => 'estatus',
+        // usuarios
+        'nombres' => 'nombres',
+        'apellidos' => 'apellidos',
+        'email' => 'correo electrónico',
+        'password' => 'contraseña',
+        'password_confirmation' => 'repetir contraseña',
+        'tipo_usuario' => 'tipo de usuario',
+        // otro
+        'supervisor' => 'supervisor',
+        'cliente' => 'cliente',
     ],
 
 ];

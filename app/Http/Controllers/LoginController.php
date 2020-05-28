@@ -44,10 +44,10 @@ class LoginController extends Controller
                 }
             } else {
                 Auth::logout();
-                return redirect('/')->with('m_error','Su cuenta no se encuentra activa, pongase a en contacto con el administrador del sitio.');
+                return redirect('/')->with('error','Su cuenta no se encuentra activa, pongase a en contacto con el administrador del sitio.');
             }       
     	}else{
-    		return redirect()->back()->with('m_error','Correo o contraseña incorrecta.');
+    		return redirect()->back()->with('error','Correo o contraseña incorrecta.');
     	}
     }
 
