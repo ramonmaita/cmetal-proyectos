@@ -10,7 +10,14 @@ class Proyecto extends Model
         'fecha_inicio', 'fecha_fin', 'nombre', 'direccion', 'descripcion', 'gastos_generales', 'descuento', 'utilidad', 'gasto_estimado', 'estatus'
     ];
     
-
+    public function Usuarios()
+    {
+        return $this->belongsToMany('App\User');
+    }
+    public function UsuarioProyecto()
+    {
+        return $this->hasMany('App\UsuarioProyecto');
+    }
     public function Sectores()
     {
     	return $this->hasMany('App\Sector');

@@ -74,7 +74,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.001"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" id="precio" readonly="true" value="{{ $actividad->precio }}">
+					                      <input type="number" step="0.01" min="0.01"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" id="precio"  value="{{ $actividad->precio }}">
 					                      <label for="last-name-column">{{ __('messages.precio') }}</label>
 					                      	@if ($errors->has('precio'))
 												<div class="invalid-feedback">
@@ -172,18 +172,37 @@
    	<script>
    		$('#unidad_id').change(function(event) {
 			var precio = $(this).find(':selected').attr('data-precio');
-			$('#precio').val(precio);
-			console.log(precio);
+			// $('#precio').val(precio);
+			// console.log(precio);
 		});
    		$(function() {
 
-   			$('#metrado').keyup(function(event) {
-   				var precio_unit = parseFloat($('#unidad_id').find(':selected').attr('data-precio'));
-   				var metrado = parseFloat($(this).val());
+   			$('#metrado,#precio').keyup(function(event) {
+   				// var precio_unit = parseFloat($('#unidad_id').find(':selected').attr('data-precio'));
+   				var precio_unit = parseFloat($('#precio').val());
+   				var metrado = parseFloat($('#metrado').val());
    				var precioT = metrado*precio_unit
-   				console.log( parseFloat(precioT) );
-   				console.log(metrado);
-   				console.log(precio_unit);
+   				// console.log( parseFloat(precioT) );
+   				// console.log(metrado);
+   				// console.log(precio_unit);
+   				if(metrado == 0){
+   					$('#precioTotal').val( parseFloat(0).toFixed(2));
+   					return false;
+   				}
+   				$('#precioTotal').val( parseFloat(precioT).toFixed(2));
+   			});
+   			$('#metrado,#precio').change(function(event) {
+   				// var precio_unit = parseFloat($('#unidad_id').find(':selected').attr('data-precio'));
+   				var precio_unit = parseFloat($('#precio').val());
+   				var metrado = parseFloat($('#metrado').val());
+   				var precioT = metrado*precio_unit
+   				// console.log( parseFloat(precioT) );
+   				// console.log(metrado);
+   				// console.log(precio_unit);
+   				if(metrado == 0){
+   					$('#precioTotal').val( parseFloat(0).toFixed(2));
+   					return false;
+   				}
    				$('#precioTotal').val( parseFloat(precioT).toFixed(2));
    			});
    		});

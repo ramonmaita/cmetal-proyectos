@@ -165,7 +165,7 @@
               <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                 <div class="user-nav d-sm-flex d-none">
                   <span class="user-name">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>
-                  <span class="user-status text-muted">Available</span>
+                  {{-- <span class="user-status text-muted">Available</span> --}}
                 </div>
                 <span>
                   <div class="avatar mr-1 bg-warning bg-lighten-2">
@@ -175,7 +175,7 @@
                 </span>
               </a>
               <div class="dropdown-menu dropdown-menu-right pb-0">
-                <a class="dropdown-item" href="page-user-profile.html">
+                <a class="dropdown-item" href="{{ route('usuarios.perfil') }}">
                   <i class="bx bx-user mr-50"></i> {{ __('messages.editProfile') }}
                 </a>
                 {{-- <a class="dropdown-item" href="app-email.html">

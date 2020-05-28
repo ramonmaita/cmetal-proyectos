@@ -65,7 +65,7 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-6 col-12">
+					                  <div class="col-md-4 col-12">
 					                    <div class="form-label-group">
 					                      <input type="text" class="form-control  {{ ($errors->has('email')) ? 'is-invalid' : '' }}" id="email" placeholder="{{ __('messages.email') }}" name="email" value="{{ old('email') }}">
 					                      <label for="email">{{ __('messages.email') }}</label>
@@ -77,7 +77,7 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-6 col-12">
+					                  <div class="col-md-4 col-12">
 					                    <div class="form-label-group">
 					                      <input type="password" id="password" class="form-control  {{ ($errors->has('password')) ? 'is-invalid' : '' }}" name="password" placeholder="{{ __('messages.password') }}">
 					                      <label for="password">{{ __('messages.password') }}</label>
@@ -85,6 +85,18 @@
 												<div class="invalid-feedback">
 							                    	<i class="bx bx-radio-circle"></i>
 						                    		{{ $errors->first('password') }}
+							                  	</div>
+											@endif
+					                    </div>
+					                  </div>
+					                  <div class="col-md-4 col-12">
+					                    <div class="form-label-group">
+					                      <input type="password" id="password_confirmation" class="form-control  {{ ($errors->has('password_confirmation')) ? 'is-invalid' : '' }}" name="password_confirmation" placeholder="{{ __('messages.password_confirmation') }}">
+					                      <label for="password_confirmation">{{ __('messages.password_confirmation') }}</label>
+					                      	@if ($errors->has('password_confirmation'))
+												<div class="invalid-feedback">
+							                    	<i class="bx bx-radio-circle"></i>
+						                    		{{ $errors->first('password_confirmation') }}
 							                  	</div>
 											@endif
 					                    </div>

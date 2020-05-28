@@ -16,8 +16,8 @@ class CreateMetradosTable extends Migration
         Schema::create('metrados', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-            $table->float('precio');
-            $table->integer('estatus')->default(0);
+            $table->float('precio')->default(0);
+            $table->integer('estatus')->default(1);
             $table->timestamps();
         });
     }

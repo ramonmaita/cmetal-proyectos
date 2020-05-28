@@ -15,7 +15,7 @@
 			<a href="#">Card</a>
 		</li> --}}
 		<li class="breadcrumb-item active">
-			{{ __('messages.metrado') }}            
+			{{ __('messages.metrados') }}            
 		</li>
   	</ol>
 </div>
@@ -54,7 +54,7 @@
 	                                <thead>
 	                                    <tr>
 	                                        <th>{{ __('messages.nombreMetrado') }}</th>
-	                                        <th>{{ __('messages.precio') }}</th>
+	                                        {{-- <th>{{ __('messages.precio') }}</th> --}}
 	                                        <th>{{ __('messages.estatus') }}</th>
 	                                        <th>{{ __('messages.acciones') }}</th>
 	                                    </tr>
@@ -107,7 +107,7 @@
 	            ajax: '{{ route('metrados.index') }}',
 	            columns: [
 	                { data: 'nombre', name: 'nombre' },
-	                { data: 'precio', name: 'precio' },
+	                // { data: 'precio', name: 'precio' },
 	                { data: 'estatus', name: 'estatus' },
 	                { data: 'acciones', name: 'acciones' },
 	            ]

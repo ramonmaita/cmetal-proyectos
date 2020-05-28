@@ -22,26 +22,14 @@
 <div class="shadow-bottom"></div>
 <div class="main-menu-content">
   	<ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
+  		@if(Auth::user()->tipo == 1)
 		<li class="nav-item @yield('inicio')">
 			<a href="# " >
 				<i class="menu-livicon" data-icon="desktop"></i>
 				<span class="menu-title">{{ __('messages.home') }}</span>
             </a>
-            {{-- <ul class="menu-content">
-                <li class=active>
-    		        <a href="index.html" >
-            			<i class="bx bx-right-arrow-alt"></i>
-            			<span class="menu-item">eCommerce</span>
-            		</a>
-              	</li>
-              	<li >
-            		<a href="dashboard-analytics.html" >
-             			<i class="bx bx-right-arrow-alt"></i>
-            			<span class="menu-item">Analytics</span>
-            		</a>
-                </li>
-            </ul> --}}
 		</li>
+		@endif
     	<li class="navigation-header"><span>Modulos</span></li>
         <li class="nav-item @yield('proyectos')">
 		    <a href="{{ route('proyectos.index') }}" >

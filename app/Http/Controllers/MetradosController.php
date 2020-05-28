@@ -29,7 +29,8 @@ class MetradosController extends Controller
 
     public function getData()
     {
-        $model =  Metrado::where('estatus',1)->get();
+        // $model =  Metrado::where('estatus',1)->get();
+        $model =  Metrado::all();
 
         return DataTables::of($model)
             ->editColumn('estatus',function($model){
@@ -75,7 +76,7 @@ class MetradosController extends Controller
             DB::beginTransaction();
             Metrado::create([
                 'nombre' => $request->nombre_metrado,
-                'precio' => $request->precio,
+                // 'precio' => $request->precio,
                 'estatus' => $request->estatus,
             ]);
             DB::commit();
@@ -133,7 +134,7 @@ class MetradosController extends Controller
             $metrado = Metrado::find($id);
             $metrado->update([
                 'nombre' => $request->nombre_metrado,
-                'precio' => $request->precio,
+                // 'precio' => $request->precio,
                 'estatus' => $request->estatus,
             ]);
             DB::commit();

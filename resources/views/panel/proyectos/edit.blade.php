@@ -121,10 +121,14 @@
 					                  {{-- hr --}}
 					                  <div class="col-md-6 col-12 mb-2">
 					                    <div class="">
-					                      <label for="supervisor">{{ __('messages.supervisor') }}</label>
+					                      <label for="supervisor">{{ __('messages.supervisor') }}
+					                       {{-- {{ $proyecto->UsuarioProyecto->where('proyecto_id',$supervisor->id)->first() }} --}}
+					                   </label>
 					                      <select name="supervisor" id="supervisor" class="form-control  {{ ($errors->has('supervisor')) ? 'is-invalid' : '' }}">
 					                      	@forelse($supervisores as $supervisor)
-					                      		<option value="{{$supervisor->id}}">{{$supervisor->nombre .' '. $supervisor->apellido}}</option>
+					                      		<option value="{{$supervisor->id}}" {{(@$proyecto->UsuarioProyecto->where('user_id',$supervisor->id)->first()->user_id == $supervisor->id) ? 'selected' : ''}}>
+					                      			{{$supervisor->nombre .' '. $supervisor->apellido}}
+					                      		</option>
 					                      	@empty
 					                      		<option value="" disabled="disabled">{{ __('messages.sinResultado') }}</option>
 					                      	@endforelse
@@ -142,7 +146,7 @@
 					                      <label for="cliente">{{ __('messages.cliente') }}</label>
 					                      <select name="cliente" id="cliente" class="form-control  {{ ($errors->has('cliente')) ? 'is-invalid' : '' }}">
 					                      	@forelse($clientes as $cliente)
-					                      		<option value="{{$cliente->id}}">{{$cliente->nombre .' '. $cliente->apellido}}</option>
+					                      		<option value="{{$cliente->id}}"  {{(@$proyecto->UsuarioProyecto->where('user_id',$cliente->id)->first()->user_id == $cliente->id) ? 'selected' : ''}}>{{$cliente->nombre .' '. $cliente->apellido}}</option>
 					                      	@empty
 					                      		<option value="" disabled="disabled">{{ __('messages.sinResultado') }}</option>
 					                      	@endforelse
@@ -202,7 +206,7 @@
 					                  </div>
 					                  <div class="col-md-3 col-12">
 					                    <div class="form-label-group">
-					                      <input type="number" min="0" step="0.01" id="gastosE"  class="form-control {{ ($errors->has('gastosE')) ? 'is-invalid' : '' }}" name="gastosE" placeholder="{{ __('messages.gastosEstimado') }}"  value="{{ $proyecto->gastos_estimado }}">
+					                      <input type="number" min="0" step="0.01" id="gastosE"  class="form-control {{ ($errors->has('gastosE')) ? 'is-invalid' : '' }}" name="gastosE" placeholder="{{ __('messages.gastosEstimado') }}"  value="{{ $proyecto->gasto_estimado }}">
 					                      <label for="gastosE">{{ __('messages.gastosEstimado') }}</label>
 											@if ($errors->has('gastosE'))
 												<div class="invalid-feedback">

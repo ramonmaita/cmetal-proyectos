@@ -110,9 +110,9 @@
                                   </label>
                                 </div> --}}
                               </div>
-                              <div class="text-right">
+                             {{--  <div class="text-right">
                                 <a href="auth-forgot-password.html" class="card-link"><small>{{ __('messages.olvidoPassword') }}</small></a>
-                              </div>
+                              </div> --}}
                             </div>
                             <button role="submit" class="btn btn-cmetal glow w-100 position-relative">{{ __('messages.login') }}
                               <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>

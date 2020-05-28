@@ -27,6 +27,16 @@ class ProyectosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        // $this->middleware('auth');
+
+        // $this->middleware('log')->only('index');
+
+        $this->middleware('proyectos', ['only' => ['create','store', 'edit', 'update', 'destroy']]);
+
+        // $this->middleware('proyectos', ['only' => ['store', 'edit', 'update', 'destroy']]);
+    }
     public function index()
     {
         if (request()->ajax()) {
@@ -135,13 +145,15 @@ class ProyectosController extends Controller
             if (isset($request->supervisor) && $request->supervisor != '') {
                 UsuarioProyecto::create([
                     'user_id' => $request->supervisor,
-                    'proyecto_id' => $proyecto->id
+                    'proyecto_id' => $proyecto->id,
+                    'tipo' => 1,
                 ]);
             }
             if (isset($request->cliente) && $request->cliente != '') {
                 UsuarioProyecto::create([
                     'user_id' => $request->cliente,
-                    'proyecto_id' => $proyecto->id
+                    'proyecto_id' => $proyecto->id,
+                    'tipo' => 2,
                 ]);
             }
             DB::commit();
@@ -166,7 +178,11 @@ class ProyectosController extends Controller
     public function show($id)
     {
         $proyecto = Proyecto::find($id);
-
+        // $autorizado =  UsuarioProyecto::where('user_id',Auth::user()->id)->where('proyecto_id',$id)->count();
+        $autorizado =  Auth::user()->ProyectosUsuarios->where('proyecto_id',$id)->count();
+        if ($autorizado <=  0 && Auth::user()->tipo != 1) {
+            return abort(403);
+        }
         if ($proyecto) {
             return view('panel.proyectos.show',['proyecto' => $proyecto]);
         } else {
@@ -217,6 +233,21 @@ class ProyectosController extends Controller
                 'gasto_estimado' => $request->gastosE,
                 'estatus' => $request->estatus,
             ]);
+
+            if (isset($request->supervisor) && $request->supervisor != '') {
+                UsuarioProyecto::create([
+                    'user_id' => $request->supervisor,
+                    'proyecto_id' => $proyecto->id,
+                    'tipo' => 1,
+                ]);
+            }
+            if (isset($request->cliente) && $request->cliente != '') {
+                UsuarioProyecto::create([
+                    'user_id' => $request->cliente,
+                    'proyecto_id' => $proyecto->id,
+                    'tipo' => 2,
+                ]);
+            }
             DB::commit();
             return redirect()->route('proyectos.index')->with([
                 'success' => __('messages.operacionExitosa')

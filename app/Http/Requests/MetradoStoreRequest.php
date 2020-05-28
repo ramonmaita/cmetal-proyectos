@@ -26,7 +26,7 @@ class MetradoStoreRequest extends FormRequest
     {
         return [
             'nombre_metrado' => 'required',
-            'precio' => 'required|numeric',
+            // 'precio' => 'required|numeric',
             'estatus' => 'required'
         ];
     }

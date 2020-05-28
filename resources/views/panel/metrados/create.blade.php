@@ -42,7 +42,7 @@
 				              	<div class="form-body">
 					                <div class="row"> 
 					                  
-					                  <div class="col-md-4 col-12">
+					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group  mt-2">
 					                      <input type="text" class="form-control  {{ ($errors->has('nombre_metrado')) ? 'is-invalid' : '' }}" id="nombre_metrado" placeholder="{{ __('messages.nombreMetrado') }}" name="nombre_metrado">
 					                      <label for="nombre_metrado">{{ __('messages.nombreMetrado') }}</label>
@@ -54,7 +54,7 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-4 col-12">
+					                  {{-- <div class="col-md-4 col-12">
 					                    <div class="form-label-group  mt-2">
 					                      <input type="number" min="0.01" step="0.01" id="precio"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" placeholder="{{ __('messages.precio') }}">
 					                      <label for="precio">{{ __('messages.precio') }}</label>
@@ -65,12 +65,13 @@
 							                  	</div>
 											@endif
 					                    </div>
-					                  </div>
-					                  <div class="col-md-4 col-12">
+					                  </div> --}}
+					                  <div class="col-md-6 col-12">
 					                    <div class="">
 					                      <label for="estatus">{{ __('messages.estatus') }}</label>
 					                      <select name="estatus" id="estatus" class="form-control  {{ ($errors->has('estatus')) ? 'is-invalid' : '' }}">
 					                      	<option value="1">{{ __('messages.activo') }}</option>
+					                      	<option value="2">{{ __('messages.inactivo') }}</option>
 					                      </select>
 					                      	@if ($errors->has('estatus'))
 												<div class="invalid-feedback">

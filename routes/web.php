@@ -13,7 +13,6 @@
 
 Route::get('/', function () {
     return view('login');
-    // return view('panel.index');
 });
 
 Route::get('/login', function () {
@@ -41,10 +40,11 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
         return view('panel.index',['proyectos' => $proyectos,'sectores' => $sectores, 'metrados' => $metrados,'actividades' => $actividades]);
     })->name('panel.index');
 
-    Route::group(['prefix' => 'proyectos'], function() {
+    Route::group(['prefix' => 'proyectos', 'middleware' => 'proyectos'], function() {
         Route::get('{id}/pdf', 'ProyectosController@pdf')->name('proyectos.pdf');
         Route::get('{id}/sectores','SectoresController@index')->name('sectores');
         Route::get('{id}/sectores/create','SectoresController@create')->name('sectores.create');
+
         Route::get('sector/{id}/edit', 'SectoresController@edit')->name('sectores.edit');
         Route::put('actualizar/{id}', 'SectoresController@update')->name('sectores.update');
         Route::post('guardar-sector/{id}', 'SectoresController@store')->name('sectores.store');
@@ -63,46 +63,20 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
         });
     });
 
-    Route::resource('actividades', 'ActividadesController');
-    Route::resource('proyectos', 'ProyectosController');
 
-    Route::prefix('metrados')->as('metrados.')->group(function () {
-
+    Route::prefix('usuarios')->as('usuarios.')->group(function () {
+        Route::get('perfil', 'UsuariosController@perfil')->name('perfil');
     });
 
     Route::post('guardar-reporte/{id}', 'ReportesController@store')->name('reportes.store');
 
-    Route::resource('metrados', 'MetradosController');
 
     
 
+    Route::resource('actividades', 'ActividadesController');
+    Route::resource('proyectos', 'ProyectosController');
+    Route::resource('metrados', 'MetradosController')->middleware('admin');
     Route::resource('usuarios', 'UsuariosController');
 
 });
 
-
-// Route::prefix('panel/admin')
-//     ->namespace('Admin')
-//     ->middleware(['auth:admin'])
-//     ->as('panel.admin.')
-//     ->group(function () {
-
-//         Route::get('/inicio', 'PanelController@index')->name('index');
-
-//         Route::prefix('perfil')->group(function (){
-//             Route::get('/', 'PerfilController@perfil')->name('perfil.perfil');
-//             Route::post('actualizar-contrasena', 'PerfilController@cambiarContrasena')->name('perfil.actualizar-contrasena');
-//             Route::post('actualizar-perfil', 'PerfilController@actualizarDatos')->name('perfil.actualizar-perfil');
-//         });
-
-//         Route::prefix('bancos')->as('bancos.')->group(function () {
-//             Route::get('/', 'BancosController@index')->name('index');
-//             Route::post('/', 'BancosController@store')->name('store');
-//             Route::get('crear', 'BancosController@create')->name('crear');
-//             Route::get('{id}/editar', 'BancosController@edit')->name('editar');
-//             Route::put('/{id}', 'BancosController@update')->name('update');
-//             Route::delete('/{id}', 'BancosController@destroy')->name('destroy');
-//             Route::get('data', 'BancosController@data')->name('data');
-//         });
-
-// });

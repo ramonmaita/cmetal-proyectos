@@ -16,6 +16,17 @@ use DB;
 
 class UsuariosController extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->middleware('auth');
+
+        // $this->middleware('log')->only('index');
+
+        $this->middleware('admin', ['only' => ['index','create','store', 'edit', 'destroy']]);
+
+        // $this->middleware('proyectos', ['only' => ['store', 'edit', 'update', 'destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -162,10 +173,15 @@ class UsuariosController extends Controller
                 'apellido' => $request->apellidos,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'tipo' => $request->tipo_usuario,
-                'estatus' => $request->estatus,
+                ($request->tipo_usuario == '') ?  '' : 'tipo' => $request->tipo_usuario, 
+                ($request->estatus == '') ?  '' : 'estatus' => $request->estatus, 
             ]);
             DB::commit();
+            if (isset($request->perfil)) {
+                return redirect()->back()->with([
+                    'success' => __('messages.operacionExitosa')
+                ]);  
+            }
             return redirect()->route('usuarios.index')->with([
                 'success' => __('messages.operacionExitosa')
             ]);
@@ -184,6 +200,11 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function perfil()
+    {
+        return view('panel.usuarios.perfil');
+    }
     public function destroy($id)
     {
         //

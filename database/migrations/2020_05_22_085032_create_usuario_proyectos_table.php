@@ -17,6 +17,7 @@ class CreateUsuarioProyectosTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('proyecto_id');
+            $table->integer('tipo');
             $table->timestamps();
         });
     }

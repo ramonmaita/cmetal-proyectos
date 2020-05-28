@@ -94,7 +94,7 @@
 		            </div>
                     <div class="row">
                     	<div class="col-12">
-							<label for="">Metrado  </label>
+							<label for="">{{__('messages.metrado')}}  </label>
 							@php
 								// totales
 								$subtotal = round($proyecto->MetradoProyecto()['pt'],2);
@@ -131,18 +131,18 @@
                     	<div class="col-12">
 							<div class="row">
 								<div class="col-8">
-									<label for="">Gasto Estimado </label>
+									<label for="">{{__('messages.gastosEstimado')}} </label>
 									
 								</div>
 								<div class="col-4">
-									<a href="#" data-uri="{{ route('gastos.store',['id' => $proyecto->id]) }}" data-max="{{ round($proyecto->gasto_estimado,2) - round($proyecto->Gastos->sum('monto'),2) }}" class="float-right cmetal modal-registro" data-titulo="Gasto Estimado">
-				                      <i class="cursor-pointer bx bx-plus font-small-3 mr-50"></i><span>{{ __('messages.nuevoGasto') }}</span>
+									<a href="#" data-uri="{{ route('gastos.store',['id' => $proyecto->id]) }}" data-max="{{ round($proyecto->gasto_estimado,2) - round($proyecto->Gastos->sum('monto'),2) }}" class="float-right cmetal modal-registro" data-titulo="{{__('messages.gastosEstimado')}}">
+				                      <i class="cursor-pointer bx bx-plus-circle font-small-3 mr-50"></i><span>{{ __('messages.nuevoGasto') }}</span>
 				                    </a>
 				                </div>
 								<div class="col-12">
 		                    		<div class="activity-progress flex-grow-1 mt-2 cursor-pointer  pb-2"   data-toggle="popover" data-content=" {{ number_format(round($proyecto->Gastos->sum('monto'),2),2) }} de {{ number_format(round($proyecto->gasto_estimado,2),2) }}" data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
 					                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
-					                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{($proyecto->Gastos->sum('monto')/ $g = ($proyecto->gasto_estimado == 0) ? 1 : $proyecto->gasto_estimado)*100}}" style="width:{{($proyecto->Gastos->sum('monto')/ $g = ($proyecto->gasto_estimado == 0) ? 1 : $proyecto->gasto_estimado)*100}}%">
+					                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ round(($proyecto->Gastos->sum('monto')/ $g = ($proyecto->gasto_estimado == 0) ? 1 : $proyecto->gasto_estimado)*100,2)}}" style="width:{{ round(($proyecto->Gastos->sum('monto')/ $g = ($proyecto->gasto_estimado == 0) ? 1 : $proyecto->gasto_estimado)*100,2)}}%">
 					                    	</div>
 					                  	</div>
 					                </div>
@@ -153,12 +153,12 @@
                     	<div class="col-12">
                     		<div class="row">
                     			<div class="col-8">
-									<label for="">Factura Estimada  </label>
+									<label for="">{{__('messages.facturaEstimada')}}  </label>
                     			</div>
                     			<div class="col-4">
                     				
-                    				<a href="#" data-uri="{{ route('facturas.store',['id' => $proyecto->id]) }}" data-max="{{ round($tot,2) - round($proyecto->Facturas->sum('monto'),2) }}" class="float-right cmetal modal-registro" data-titulo="Factura Estimada">
-				                      <i class="cursor-pointer bx bx-plus font-small-3 mr-50"></i><span>{{ __('messages.nuevaFactura') }}</span>
+                    				<a href="#" data-uri="{{ route('facturas.store',['id' => $proyecto->id]) }}" data-max="{{ round($tot,2) - round($proyecto->Facturas->sum('monto'),2) }}" class="float-right cmetal modal-registro" data-titulo="{{__('messages.facturaEstimada')}}">
+				                      <i class="cursor-pointer bx bx-plus-circle font-small-3 mr-50"></i><span>{{ __('messages.nuevaFactura') }}</span>
 				                    </a>
                     			</div>
                     			<div class="col-12">
@@ -176,12 +176,12 @@
                     	<div class="col-12">
 							<div class="row">
                     			<div class="col-8">
-									<label for="">Depositos Estimados  </label>
+									<label for="">{{__('messages.depositoEstimado')}}  </label>
                     			</div>
                     			<div class="col-4">
                     				
-                    				<a href="#" data-uri="{{ route('depositos.store',['id' => $proyecto->id]) }}" data-max="{{ round($tot,2) - round($proyecto->Depositos->sum('monto'),2) }}" class="float-right cmetal modal-registro" data-titulo="Depositos Estimados">
-				                      <i class="cursor-pointer bx bx-plus font-small-3 mr-50"></i><span>{{ __('messages.nuevoDeposito') }}</span>
+                    				<a href="#" data-uri="{{ route('depositos.store',['id' => $proyecto->id]) }}" data-max="{{ round($tot,2) - round($proyecto->Depositos->sum('monto'),2) }}" class="float-right cmetal modal-registro" data-titulo="{{__('messages.depositoEstimado')}}">
+				                      <i class="cursor-pointer bx bx-plus-circle font-small-3 mr-50"></i><span>{{ __('messages.nuevoDeposito') }}</span>
 				                    </a>
                     			</div>
                     			<div class="col-12">
@@ -219,7 +219,7 @@
 				$gastosGS = round($subtotalS*($proyecto->gastos_generales/100),2);
 				$utilidadS = round($subtotalS*($proyecto->utilidad/100),2);
 				$descuentoS = round($subtotalS*($proyecto->descuento/100),2);
-				$totalS = ($gastosGS + $utilidadS + $utilidadS);
+				$totalS = ($gastosGS + $subtotalS + $utilidadS);
 				// total realizado sector
 				$subtotalS_r = round($sector->total(),2);
 				$gastosGS_r = round($subtotalS_r*($proyecto->gastos_generales/100),2);
@@ -233,12 +233,12 @@
 		        		{{ $sector->nombre }}
 		        	</span>
 	        		<br> 
-	        		<div class="activity-progress flex-grow-1 mt-2"   data-toggle="popover" data-content=" SUBTOTAL: {{ number_format($subtotalS_r,2) }} de <b>{{ number_format($subtotalS,2) }}</b> <br> 
+	        		<div class="activity-progress flex-grow-1 mt-2"  @if(Auth::user()->tipo == 1) data-toggle="popover" data-content=" SUBTOTAL: {{ number_format($subtotalS_r,2) }} de <b>{{ number_format($subtotalS,2) }}</b> <br> 
 	        			GASTOS GEN.: {{ number_format($gastosGS_r,2) }} de <b>{{ number_format($gastosGS,2) }} </b><br> 
 	        			UTILIDAD: {{ number_format($utilidadS_r,2) }} de <b>{{ number_format($utilidadS,2) }} </b><br> 
 	        			DESC COM.: {{ number_format($descuentoS_r,2) }} de <b>{{ number_format($descuentoS,2) }}</b><br> 
 	        			TOTAL: {{ number_format($totalS_r,2) }} de <b>{{ number_format($totalS,2) }}</b>" 
-	        			data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
+	        			data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true" @endif>
 	                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
 	                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
 	                  	</div>
@@ -281,7 +281,11 @@
 								                        </div>
 
 						                      		</div>
-								                        	<div class="activity-progress flex-grow-1  modal-actividades"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}"   data-toggle="popover" data-content=" {{ $actividad->Reportes->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}" data-trigger="hover" data-original-title="" title="" data-placement="top">
+								                        	<div class="activity-progress flex-grow-1  modal-actividades"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}"   data-toggle="popover" data-content=" 
+								                        		MONTO ACUM: {{ $actividad->Reportes->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}
+								                        		<br>
+								                        		MET ACUM: {{ $actividad->Reportes->sum('metrado')}} de {{ $actividad->metrado}}
+								                        		" data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
 											                  	<span class="text-muted d-inline-block mb-50">
 											                  		<span class="widget-todo-title ml-50">
 								                        				{{ $actividad->nombre }}
@@ -640,6 +644,8 @@
    				$('#myModalLabel21').html('Reporte - '+$(this).data('actividad'));
    				if($(this).data('max') == 0){
    					$('#metrado').attr('disabled','disabled');
+   				}else{
+   					$('#monto').removeAttr('disabled');
    				}
    				$('#metrado').attr('max',$(this).data('max'));
    				unBlock()
@@ -657,6 +663,8 @@
    				$('#myModalLabel22').html($(this).data('titulo'));
    				if($(this).data('max') == 0){
    					$('#monto').attr('disabled','disabled');
+   				}else{
+   					$('#monto').removeAttr('disabled');
    				}
    				$('#monto').attr('max',$(this).data('max'));
    				unBlock()

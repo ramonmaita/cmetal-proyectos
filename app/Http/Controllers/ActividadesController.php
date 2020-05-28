@@ -63,7 +63,7 @@ class ActividadesController extends Controller
                 'nombre' => $request->nombre_actividad,
                 'descripcion' => $request->descripcion,
                 'metrado' => $request->metrado,
-                'precio' => $metrado->precio,
+                'precio' => $request->precio,
                 'estatus' => $request->estatus,
             ]);
 
@@ -262,7 +262,7 @@ class ActividadesController extends Controller
                 'nombre' => $request->nombre_actividad,
                 'descripcion' => $request->descripcion,
                 'metrado' => $request->metrado,
-                'precio' => $metrado->precio,
+                'precio' => $request->precio,
                 'estatus' => $request->estatus,
             ]);
 

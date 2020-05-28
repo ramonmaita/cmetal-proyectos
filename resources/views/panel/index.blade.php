@@ -76,6 +76,21 @@
     </div>
 </div> --}}
 <div class="row">
+  <div class="col-xl-3 col-md-4 col-sm-6">
+      <div class="card text-center">
+        <div class="card-content">
+          <div class="card-body">
+            <div class="badge-circle badge-circle-lg badge-circle-light-info mx-auto my-1">
+              <i class="bx bx-file font-medium-5"></i>
+            </div>
+            <p class="text-muted mb-0 line-ellipsis">{{ __('messages.projects') }}</p>
+            <h2 class="mb-0">{{ $proyectos }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row">
 	<div class="col-12">
   		<div class="card">
     		<div class="card-header">

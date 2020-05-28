@@ -27,9 +27,7 @@ class UsuariosStoreRequest extends FormRequest
             'nombres' => 'required|min:5',
             'apellidos' => 'required|min:5',
             'email' => 'required|min:5|unique:users,id,'.$this->id,
-            'password' => 'required|min:5',
-            'estatus' => 'required',
-            'tipo_usuario' => 'required',
+            'password' => 'required|min:5|confirmed',
         ];
     }
 }

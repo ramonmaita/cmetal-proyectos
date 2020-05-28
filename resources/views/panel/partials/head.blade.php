@@ -95,5 +95,9 @@
               background-color: #5b1818;
               box-shadow: 0 2px 6px 0 rgb(91, 24, 24);
           }
+
+          .dropdown-item.active, .dropdown-item:active {
+              background-color: #5b1818 !important;
+          }
       </style>
   </head>

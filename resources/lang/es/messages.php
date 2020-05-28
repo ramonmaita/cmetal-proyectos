@@ -74,6 +74,17 @@ return [
 	'gastosEstimado' => 'Gasto Estimado',
 	'utilidad' => 'Utilidad',
 	'descuento' => 'DESC COM.',
+	'inactivo' => 'Inactivo',
+	'indicadores' => 'Indicadores',
+	'nuevoGasto' => 'Agregar Gasto',
+	'nuevaFactura' => 'Agregar Factura',
+	'nuevoDeposito' => 'Agregar Deposito',
+	'editMetrado' => 'Editar Unidad de Metrado',
+	'password_confirmation' => 'Repetir Contraseña',
+	'editPerfil' => 'Editar Perfil',
+	'monto' => 'Monto',
+	'facturaEstimada' => 'Factura Estimada',
+	'depositoEstimado' => 'Depositos Estimados',
 
 
 ];
