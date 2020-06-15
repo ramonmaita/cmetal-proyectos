@@ -42,6 +42,12 @@
         html .pace .pace-progress {
             background: #fff;
         }
+        .menu-livicon{
+          width: 20px !important
+        }
+        body{
+          font-size: 10pt;
+        }
         .main-menu .navbar-header .navbar-brand .brand-text {
           color: #5b1818 !important;
         }

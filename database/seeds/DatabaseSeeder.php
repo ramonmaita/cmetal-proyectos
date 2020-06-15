@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 
 use App\User;
 
+use App\Metrado;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -48,6 +50,37 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admincmetal'),
             'estatus' => 1,
             'tipo' => 3
+        ]);
+
+        Metrado::insert([
+            'nombre' => 'M2'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Ml'
+        ]);
+        Metrado::insert([
+            'nombre' => 'M3'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Bolsa'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Kg'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Unidad'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Global'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Pieza'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Punto'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Km'
         ]);
     }
 }

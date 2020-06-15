@@ -109,19 +109,21 @@ class ActividadesController extends Controller
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <th>N°</th>
-                                                <th>'. __('messages.fecha') .'</th>
-                                                <th>'. __('messages.metradoRealizado') .'</th>
-                                            </tr>
+                                      <div class="table-responsive">
+                                          <table class="table table-striped">
+                                              <tr>
+                                                  <th>N°</th>
+                                                  <th>'. __('messages.fecha') .'</th>
+                                                  <th>'. __('messages.metradoRealizado') .'</th>
+                                              </tr>
 
-                                            <tr>
-                                                <td>'.($key+1).'</td>
-                                                <td>'.$reporte->fecha.'</td>
-                                                <td>'.$reporte->metrado.' '.$reporte->Actividad->Unidad->nombre.'</td>
-                                            </tr>
-                                        </table>
+                                              <tr>
+                                                  <td>'.($key+1).'</td>
+                                                  <td>'.$reporte->fecha.'</td>
+                                                  <td>'.$reporte->metrado.' '.$reporte->Actividad->Unidad->nombre.'</td>
+                                              </tr>
+                                          </table>
+                                      </div>
                                     </div>
                                 </div>    
                                 <div class="row">
@@ -143,7 +145,7 @@ class ActividadesController extends Controller
                                                           <div class="card-body p-50">
                                                             <div class="app-file-recent-details">
                                                               <div class="app-file-name font-size-small font-weight-bold"><a href="'.asset(\Storage::url($soporte->archivo)).'" target="_blank">'.$soporte->archivo.'</a></div>
-                                                              <div class="app-file-last-access font-size-small text-muted"><a href=""> <i class="bx bxs-download"></i> Descargar</a></div>
+                                                              <div class="app-file-last-access font-size-small text-muted"><a href="'.route('descargar',['archivo' => $soporte->archivo]).'" target="_blank"> <i class="bx bxs-download"></i> Descargar</a></div>
                                                             </div>
                                                           </div>
                                                         </div>
@@ -224,6 +226,11 @@ class ActividadesController extends Controller
         //       </div>
         //     </div>
         // </div>
+    }
+
+    public function descargar($archivo)
+    {
+      return Storage::disk('public')->download($archivo);
     }
 
     /**

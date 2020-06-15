@@ -34,7 +34,7 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
 	    Session::put('locale', $lenguaje);
         return redirect()->back();
 	})->name('lenguaje');
-
+    Route::get('descargar/{archivo}', 'ActividadesController@descargar')->name('descargar');
     Route::get('/', function() {
         if (Auth::user()->tipo != 1) {
             return redirect()->route('proyectos.index');

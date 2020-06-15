@@ -76,10 +76,12 @@ class ProyectosController extends Controller
             {
                 if (Auth::user()->tipo == 1 ) {
                     return '
-                    <a href="'.route('sectores',['id' => $model->id]).'" class="btn btn-icon   btn-light-cmetal "><i class="bx bxs-plus-circle"></i></a>
-                    <a href="'.route('proyectos.show',['id' => $model->id]).'" class="btn  btn-icon btn-cmetal "><i class="bx bxs-show"></i></a>
-                    <a href="'.route('proyectos.edit',['id' => $model->id]).'" class="btn  btn-icon btn-dark "><i class="bx bxs-pencil"></i></a>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="'.route('sectores',['id' => $model->id]).'" class="btn btn-icon  btn-light-cmetal "><i class="bx bxs-plus-circle"></i></a>
+                        <a href="'.route('proyectos.show',['id' => $model->id]).'" class="btn  btn-icon btn-cmetal "><i class="bx bxs-show"></i></a>
+                        <a href="'.route('proyectos.edit',['id' => $model->id]).'" class="btn  btn-icon btn-light-secondary "><i class="bx bxs-pencil"></i></a>
                 
+                    </div>
                     ';
                 }else{
                      return '

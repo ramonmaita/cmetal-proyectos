@@ -38,12 +38,12 @@
             </a>
         </li>
         @if(Auth::user()->tipo == 1)
-        <li class="nav-item @yield('metrados')">
+       {{--  <li class="nav-item @yield('metrados')">
 		    <a href="{{ route('metrados.index') }}" >
-                <i class="menu-livicon" data-icon="morph-map"></i>
+                <i class="menu-livicon" data-icon="morph-map" data-options="size: 20px;" style=""></i>
                 <span class="menu-title">{{ __('messages.metrados') }}</span>
             </a>
-        </li>
+        </li> --}}
 
          <li class="nav-item @yield('usuarios')">
 		    <a href="{{ route('usuarios.index') }}" >

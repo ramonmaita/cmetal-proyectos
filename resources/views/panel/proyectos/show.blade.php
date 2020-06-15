@@ -83,15 +83,15 @@
 			<div class="card-content collapse show">
 				<div class="card-body">
                     <div class="row">
-                    	<div class="col-4">
+                    	<div class="col-md-4 col-sm-12 col-xs-12">
 	                        <h6><small class="text-muted"><i class="cursor-pointer bx bx-calendar-alt mb-1 mr-50"></i> {{ __('messages.fechaInicio') }}</small></h6>
 	                        <p>{{ $proyecto->fecha_inicio }}</p>
 	                    </div>
-	                    <div class="col-4">
+	                    <div class="col-md-4 col-sm-12 col-xs-12">
 	                        <h6><small class="text-muted"><i class="cursor-pointer bx bx-calendar-check mb-1 mr-50"></i> {{ __('messages.fechaFin') }}</small></h6>
 	                        <p>{{ $proyecto->fecha_fin }}</p>
                       	</div>
-                      	<div class="col-4">
+                      	<div class="col-md-4 col-sm-12 col-xs-12">
 	                        <h6><small class="text-muted"><i class="cursor-pointer bx bx-purchase-tag-alt mb-1 mr-50"></i> {{ __('messages.estatus') }}</small></h6>
 	                        <p>{!! $estatus !!}</p>
                       	</div>
@@ -438,30 +438,57 @@
           </button>
         </div>
         <div class="modal-body">
-         	<table class="table table-striped">
-         		<thead>
-         			<tr>
-         				<th>{{ __('messages.descripcion') }}</th>
-         				<th>{{ __('messages.metrado') }}</th>
-         				<th>{{ __('messages.metradoRealizado') }}</th>
-         				<th>{{ __('messages.precio') }}</th>
-         			</tr>
-         		</thead>
-         		<tbody>
-         			<tr>
-         				<td id="descripcion"></td>
-         				<td id="metradoT"></td>
-         				<td id="metradoR"></td>
-         				<td id="precio"></td>
-         			</tr>
-         		</tbody>
-         		<tfoot>
-         			<tr>
-         				<td align="right" colspan="3">{{ __('messages.precioTotal')}}</td>
-         				<td id="precioTotal"></td>
-         			</tr>
-         		</tfoot>
-         	</table>
+        	<div class="col-12">
+        		<div class="row">
+        			<div class="col-md-3 col-sm-12 col-xs-12">
+        				<b>{{ __('messages.descripcion') }}</b>
+        				<p  id="descripcion"></p>
+        			</div>
+    				<div class="col-md-3 col-sm-12 col-xs-12">
+    					<b>{{ __('messages.metrado') }}</b>
+    					<p  id="metradoT"></p>
+    				</div>
+    				<div class="col-md-3 col-sm-12 col-xs-12">
+    					<b>{{ __('messages.metradoRealizado') }}</b>
+						<p  id="metradoR"></p>
+    				</div>
+    				<div class="col-md-3 col-sm-12 col-xs-12">
+    					<b>{{ __('messages.precio') }}</b>
+    					<p  id="precio"></p>
+    				</div>	
+        		</div>
+        		<div class="row">
+        			<div class="col-12 text-rigth right">
+	        			<b>{{ __('messages.precioTotal')}}</b>
+						<p  id="precioTotal"></p>
+        			</div>
+        		</div>
+        		
+	         	{{-- <table class="table table-striped">
+	         		<thead>
+	         			<tr>
+	         				<th>{{ __('messages.descripcion') }}</th>
+	         				<th>{{ __('messages.metrado') }}</th>
+	         				<th>{{ __('messages.metradoRealizado') }}</th>
+	         				<th>{{ __('messages.precio') }}</th>
+	         			</tr>
+	         		</thead>
+	         		<tbody>
+	         			<tr>
+	         				<td id="descripcion"></td>
+	         				<td id="metradoT"></td>
+	         				<td id="metradoR"></td>
+	         				<td id="precio"></td>
+	         			</tr>
+	         		</tbody>
+	         		<tfoot>
+	         			<tr>
+	         				<td align="right" colspan="3">{{ __('messages.precioTotal')}}</td>
+	         				<td id="precioTotal"></td>
+	         			</tr>
+	         		</tfoot>
+	         	</table> --}}
+        	</div>
 
           <!-- App File - Recent Accessed Files Section Starts -->
           	<div class="divider">
