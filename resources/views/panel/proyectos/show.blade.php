@@ -109,7 +109,7 @@
 		            </div>
                     <div class="row">
                     	<div class="col-12">
-							<label for="">{{__('messages.metrado')}}  </label>
+							<label for="">{{__('messages.avanceReal')}}  </label>
 							@php
 								// totales
 								$subtotal = round($proyecto->MetradoProyecto()['pt'],2);
@@ -146,7 +146,7 @@
                     	<div class="col-12">
 							<div class="row">
 								<div class="col-8">
-									<label for="">{{__('messages.gastosEstimado')}} </label>
+									<label for="">{{__('messages.gastosReal')}} </label>
 									
 								</div>
 								<div class="col-4">

@@ -53,10 +53,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Metrado::insert([
-            'nombre' => 'M2'
+            'nombre' => 'Global'
+        ]);
+        Metrado::insert([
+            'nombre' => 'Día'
         ]);
         Metrado::insert([
             'nombre' => 'Ml'
+        ]);
+        Metrado::insert([
+            'nombre' => 'M2'
         ]);
         Metrado::insert([
             'nombre' => 'M3'
@@ -69,9 +75,6 @@ class DatabaseSeeder extends Seeder
         ]);
         Metrado::insert([
             'nombre' => 'Unidad'
-        ]);
-        Metrado::insert([
-            'nombre' => 'Global'
         ]);
         Metrado::insert([
             'nombre' => 'Pieza'

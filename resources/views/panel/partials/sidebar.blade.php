@@ -7,7 +7,7 @@
                     	<img src="{{ asset('images/logo/logo-cmetal-2.png') }}" class="logo" alt="">
                   	</div>
                   	<h2 class="brand-text mb-0">
-                        CMETAL
+                        FINALBIM
                     </h2>
                 </a>
             </li>
