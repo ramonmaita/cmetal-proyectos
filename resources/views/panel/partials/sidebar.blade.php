@@ -30,14 +30,22 @@
             </a>
 		</li>
 		@endif
-    	<li class="navigation-header"><span>Modulos</span></li>
+    	<li class="navigation-header"><span>Modulos {{ (Auth::user()->empresa_id != null) ? Auth::user()->Empresa->nombre : '' }}</span></li>
         <li class="nav-item @yield('proyectos')">
 		    <a href="{{ route('proyectos.index') }}" >
                 <i class="menu-livicon" data-icon="notebook"></i>
                 <span class="menu-title">{{ __('messages.projects') }}</span>
             </a>
         </li>
-        @if(Auth::user()->tipo == 1)
+        @if(Auth::user()->tipo == 0)
+        <li class="nav-item @yield('empresas')">
+		    <a href="{{ route('empresas.index') }}" >
+                <i class="menu-livicon" data-icon="wrench" data-options="size: 20px;" style=""></i>
+                <span class="menu-title">{{ __('messages.empresas') }}</span>
+            </a>
+        </li>
+        @endif
+        @if(Auth::user()->tipo == 1 || Auth::user()->tipo == 0)
        {{--  <li class="nav-item @yield('metrados')">
 		    <a href="{{ route('metrados.index') }}" >
                 <i class="menu-livicon" data-icon="morph-map" data-options="size: 20px;" style=""></i>

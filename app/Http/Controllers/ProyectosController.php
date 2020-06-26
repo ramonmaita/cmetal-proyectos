@@ -12,6 +12,8 @@ use App\Proyecto;
 
 use App\User;
 
+use App\Empresa;
+
 use App\UsuarioProyecto;
 
 use DB;
@@ -48,7 +50,7 @@ class ProyectosController extends Controller
     public function getData()
     {
         // $model =  Proyecto::where('estatus',1)->get();
-        if (Auth::user()->tipo == 1 ) {
+        if (Auth::user()->isAdmin() == true) {
             $model =  Proyecto::all();
         }else{
             $model =  Auth::user()->Proyectos;
@@ -74,7 +76,7 @@ class ProyectosController extends Controller
             })
             ->addColumn('acciones',function ($model)
             {
-                if (Auth::user()->tipo == 1 ) {
+                if (Auth::user()->isAdmin() == true) {
                     return '
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a href="'.route('sectores',['id' => $model->id]).'" class="btn btn-icon  btn-light-cmetal "><i class="bx bxs-plus-circle"></i></a>
@@ -102,7 +104,7 @@ class ProyectosController extends Controller
      */
     public function create()
     {
-        return view('panel.proyectos.create',['supervisores' => User::where('tipo',2)->get(), 'clientes' => User::where('tipo',3)->get(), ]);
+        return view('panel.proyectos.create',['supervisores' => User::where('tipo',2)->where('estatus',1)->get(), 'clientes' => User::where('tipo',3)->where('estatus',1)->get(),'proveedores' => User::where('tipo',4)->where('estatus',1)->get(),'empresas' => Empresa::where('estatus',1)->get() ]);
     }
 
     public function pdf($id)    
@@ -132,6 +134,7 @@ class ProyectosController extends Controller
         try {
             DB::beginTransaction();
             $proyecto = Proyecto::create([
+                'empresa_id' => ($request->empresa == '') ? Auth::user()->empresa_id : $request->empresa,
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,
                 'nombre' => $request->nombre_proyecto,
@@ -158,6 +161,13 @@ class ProyectosController extends Controller
                     'tipo' => 2,
                 ]);
             }
+            if (isset($request->proveedor) && $request->proveedor != '') {
+                UsuarioProyecto::create([
+                    'user_id' => $request->proveedor,
+                    'proyecto_id' => $proyecto->id,
+                    'tipo' => 3,
+                ]);
+            }
             DB::commit();
             return redirect()->route('proyectos.index')->with([
                 'success' => __('messages.operacionExitosa')
@@ -182,7 +192,7 @@ class ProyectosController extends Controller
         $proyecto = Proyecto::find($id);
         // $autorizado =  UsuarioProyecto::where('user_id',Auth::user()->id)->where('proyecto_id',$id)->count();
         $autorizado =  Auth::user()->ProyectosUsuarios->where('proyecto_id',$id)->count();
-        if ($autorizado <=  0 && Auth::user()->tipo != 1) {
+        if ($autorizado <=  0 && Auth::user()->isAdmin() == false) {
             return abort(403);
         }
         if ($proyecto) {
@@ -224,6 +234,7 @@ class ProyectosController extends Controller
             DB::beginTransaction();
             $proyecto = Proyecto::find($id);
             $proyecto->update([
+                'empresa_id' => ($request->empresa == '') ? Auth::user()->empresa_id : $request->empresa,
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,
                 'nombre' => $request->nombre_proyecto,

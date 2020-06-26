@@ -89,7 +89,7 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-6 col-12">
+					                  <div class="col-md-{{(Auth::user()->tipo == 0) ? '4':'6'}} col-12">
 					                    <div class="form-label-group mt-2">
 					                      <input type="text" id="descripcion" class="form-control  {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcionProyecto') }}">
 					                      <label for="descripcion">{{ __('messages.descripcionProyecto') }}</label>
@@ -101,7 +101,27 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-6 col-12">
+					                  @if (Auth::user()->tipo == 0)
+					                  <div class="col-md-4 col-12">
+					                    <div class="">
+					                      <label for="empresa">{{ __('messages.empresa') }}</label>
+					                      <select name="empresa" id="empresa" class="form-control  {{ ($errors->has('empresa')) ? 'is-invalid' : '' }}" >
+					                      	@forelse($empresas as $empresa)
+												<option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+					                      	@empty
+												<option value="">{{ __('messages.sinResultados') }}</option>
+					                      	@endforelse
+					                      </select>
+					                      	@if ($errors->has('empresa'))
+												<div class="invalid-feedback">
+							                    	<i class="bx bx-radio-circle"></i>
+						                    		{{ $errors->first('empresa') }}
+							                  	</div>
+											@endif
+					                    </div>
+					                  </div>
+					                  @endif
+					                  <div class="col-md-{{(Auth::user()->tipo == 0) ? '4':'6'}} col-12">
 					                    <div class="">
 					                      <label for="estatus">{{ __('messages.estatus') }}</label>
 					                      <select name="estatus" id="estatus" class="form-control  {{ ($errors->has('estatus')) ? 'is-invalid' : '' }}">
@@ -119,10 +139,12 @@
 					                  </div>
 					                  {{-- <hr> --}}
 					                  
-					                  <div class="col-md-6 col-12 mb-2">
+					                  <div class="col-md-4 col-12 mb-2">
 					                    <div class="">
 					                      <label for="supervisor">{{ __('messages.supervisor') }}</label>
 					                      <select name="supervisor" id="supervisor" class="form-control  {{ ($errors->has('supervisor')) ? 'is-invalid' : '' }}">
+					                      	<option value=""></option>
+
 					                      	@forelse($supervisores as $supervisor)
 					                      		<option value="{{$supervisor->id}}">{{$supervisor->nombre .' '. $supervisor->apellido}}</option>
 					                      	@empty
@@ -137,10 +159,31 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-6 col-12 mb-2">
+					                  <div class="col-md-4 col-12 mb-2">
+					                    <div class="">
+					                      <label for="proveedor">{{ __('messages.proveedor') }}</label>
+					                      <select name="proveedor" id="proveedor" class="form-control  {{ ($errors->has('proveedor')) ? 'is-invalid' : '' }}">
+					                      	<option value=""></option>
+					                      	@forelse($proveedores as $proveedor)
+					                      		<option value="{{$proveedor->id}}">{{$proveedor->nombre .' '. $proveedor->apellido}}</option>
+					                      	@empty
+					                      		<option value="" disabled="disabled">{{ __('messages.sinResultado') }}</option>
+					                      	@endforelse
+					                      </select> 
+					                      	@if ($errors->has('proveedor'))
+												<div class="invalid-feedback">
+							                    	<i class="bx bx-radio-circle"></i>
+						                    		{{ $errors->first('proveedor') }}
+							                  	</div>
+											@endif
+					                    </div>
+					                  </div>
+					                  <div class="col-md-4 col-12 mb-2">
 					                    <div class="">
 					                      <label for="cliente">{{ __('messages.cliente') }}</label>
 					                      <select name="cliente" id="cliente" class="form-control  {{ ($errors->has('cliente')) ? 'is-invalid' : '' }}">
+					                      	<option value=""></option>
+
 					                      	@forelse($clientes as $cliente)
 					                      		<option value="{{$cliente->id}}">{{$cliente->nombre .' '. $cliente->apellido}}</option>
 					                      	@empty

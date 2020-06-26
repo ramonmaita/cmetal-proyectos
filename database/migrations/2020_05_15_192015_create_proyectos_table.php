@@ -15,6 +15,7 @@ class CreateProyectosTable extends Migration
     {
         Schema::create('proyectos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('empresa_id');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->string('nombre');

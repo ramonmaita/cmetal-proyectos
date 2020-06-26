@@ -8,6 +8,8 @@ use App\Http\Requests\UsuariosStoreRequest;
 
 use App\User;
 
+use App\Empresa;
+
 use Auth;
 
 use Yajra\DataTables\Facades\DataTables;
@@ -43,7 +45,11 @@ class UsuariosController extends Controller
 
     public function getData()
     {
-        $model =  User::where('id','!=',Auth::user()->id)->get();
+        if (Auth::user()->isAdmin() == true) {
+            $model =  User::where('id','!=',Auth::user()->id)->get();
+        }else{
+            $model =  User::where('id','!=',Auth::user()->id)->where('empresa_id',Auth::user()->empresa_id)->get();
+        }
 
         return DataTables::of($model)
             ->editColumn('estatus',function ($model)
@@ -64,11 +70,17 @@ class UsuariosController extends Controller
             ->editColumn('tipo',function ($model)
             {
                 switch ($model->tipo) {
+                    case 0:
+                        return '<span class="badge badge-pill badge-info">'.__('messages.superAdmin').'</span>';
+                        break;
                     case 1:
                         return '<span class="badge badge-pill badge-dark">'.__('messages.admin').'</span>';
                         break;
                     case 2:
                         return '<span class="badge badge-pill badge-primary">'.__('messages.supervisor').'</span>';
+                        break;
+                    case 4:
+                        return '<span class="badge badge-pill badge-primary">'.__('messages.proveedor').'</span>';
                         break;
                     default:
                         return '<span class="badge badge-pill badge-warning">'.__('messages.cliente').'</span>';
@@ -95,7 +107,8 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-        return view('panel.usuarios.create');
+        $empresas = Empresa::where('estatus',1)->get();
+        return view('panel.usuarios.create',['empresas' => $empresas]);
     }
 
     /**
@@ -106,6 +119,7 @@ class UsuariosController extends Controller
      */
     public function store(UsuariosStoreRequest $request)
     {
+
         try {
             DB::beginTransaction();
             User::create([
@@ -115,6 +129,7 @@ class UsuariosController extends Controller
                 'password' => bcrypt($request->password),
                 'tipo' => $request->tipo_usuario,
                 'estatus' => $request->estatus,
+                'empresa_id' => ($request->tipo_usuario == 0) ? 0 : $retVal = (Auth::user()->empresa_id == 0) ? $request->empresa :  Auth::user()->empresa_id 
             ]);
             DB::commit();
             return redirect()->route('usuarios.index')->with([
@@ -124,7 +139,6 @@ class UsuariosController extends Controller
             DB::rollback();
             return redirect()->back()->with([
                 'error'     => $e->getMessage(),
-                // 'error' => true
             ]);
         }
     }
@@ -149,8 +163,9 @@ class UsuariosController extends Controller
     public function edit($id)
     {
         $usuario = User::find($id);
+        $empresas = Empresa::where('estatus',1)->get();
         if ($usuario) {
-            return view('panel.usuarios.edit',['usuario' => $usuario]);
+            return view('panel.usuarios.edit',['usuario' => $usuario,'empresas' => $empresas]);
         } else {
             return abort(404);
         }
@@ -175,6 +190,7 @@ class UsuariosController extends Controller
                 'password' => bcrypt($request->password),
                 ($request->tipo_usuario == '') ?  '' : 'tipo' => $request->tipo_usuario, 
                 ($request->estatus == '') ?  '' : 'estatus' => $request->estatus, 
+                'empresa_id' => ($request->tipo_usuario == 0 || $request->tipo_usuario == '') ? 0 : $retVal = (Auth::user()->empresa_id == 0) ? $request->empresa :  Auth::user()->empresa_id 
             ]);
             DB::commit();
             if (isset($request->perfil)) {

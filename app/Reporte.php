@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reporte extends Model
 {
 	protected $fillable = [
-		'actividad_id','metrado','fecha'
+		'actividad_id','metrado','fecha','user_id','tipo'
 	];
     //
 

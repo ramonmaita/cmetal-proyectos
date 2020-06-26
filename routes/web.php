@@ -83,6 +83,7 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
     Route::resource('comentarios', 'ComentarioController');
     Route::resource('proyectos', 'ProyectosController');
     Route::resource('metrados', 'MetradosController')->middleware('admin');
+    Route::resource('empresas', 'EmpresaController')->middleware('superadmin');
     Route::resource('usuarios', 'UsuariosController');
 
 });

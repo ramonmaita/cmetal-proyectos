@@ -103,13 +103,15 @@
 					                    </div>
 					                  </div>
 					                  
-					                  <div class="col-md-6 col-12">
+					                  <div class="col-md-{{(Auth::user()->tipo == 0) ? '4':'6'}} col-12">
 					                    <div class="">
 					                      <label for="tipo_usuario">{{ __('messages.tipoUsuario') }}</label>
 					                      <select name="tipo_usuario" id="tipo_usuario" class="form-control  {{ ($errors->has('tipo_usuario')) ? 'is-invalid' : '' }}">
+					                      	<option value="0"  value="{{ (old('tipo_usuario') == 0 || $usuario->tipo == 0) ? 'selected' : '' }}">{{ __('messages.superAdmin') }}</option>
 					                      	<option value="1"  value="{{ (old('tipo_usuario') == 1 || $usuario->tipo == 1) ? 'selected' : '' }}">{{ __('messages.admin') }}</option>
 					                      	<option value="2"  value="{{ (old('tipo_usuario') == 2 || $usuario->tipo == 2) ? 'selected' : '' }}">{{ __('messages.supervisor') }}</option>
 					                      	<option value="3"  value="{{ (old('tipo_usuario') == 3 || $usuario->tipo == 3) ? 'selected' : '' }}">{{ __('messages.cliente') }}</option>
+					                      	<option value="4"  value="{{ (old('tipo_usuario') == 4 || $usuario->tipo == 4) ? 'selected' : '' }}">{{ __('messages.proveedor') }}</option>
 					                      </select>
 					                      	@if ($errors->has('tipo_usuario'))
 												<div class="invalid-feedback">
@@ -119,7 +121,27 @@
 											@endif
 					                    </div>
 					                  </div>
-					                  <div class="col-md-6 col-12">
+					                  @if (Auth::user()->tipo == 0)
+					                  <div class="col-md-4 col-12">
+					                    <div class="">
+					                      <label for="empresa">{{ __('messages.empresa') }}</label>
+					                      <select name="empresa" id="empresa" class="form-control  {{ ($errors->has('empresa')) ? 'is-invalid' : '' }}" disabled="disabled">
+					                      	@forelse($empresas as $empresa)
+												<option value="{{ $empresa->id }}" {{ (Auth::user()->empresa_id == $empresa->id) ? 'selected' : '' }}>{{ $empresa->nombre }}</option>
+					                      	@empty
+												<option value="">{{ __('messages.sinResultados') }}</option>
+					                      	@endforelse
+					                      </select>
+					                      	@if ($errors->has('empresa'))
+												<div class="invalid-feedback">
+							                    	<i class="bx bx-radio-circle"></i>
+						                    		{{ $errors->first('empresa') }}
+							                  	</div>
+											@endif
+					                    </div>
+					                  </div>
+					                  @endif
+					                  <div class="col-md-{{(Auth::user()->tipo == 0) ? '4':'6'}} col-12">
 					                    <div class="">
 					                      <label for="estatus">{{ __('messages.estatus') }}</label>
 					                      <select name="estatus" id="estatus" class="form-control  {{ ($errors->has('estatus')) ? 'is-invalid' : '' }}">
@@ -156,5 +178,15 @@
 
 
 @push('scripts')
-   	
+   <script>
+   		$(function() {
+   			$('#tipo_usuario').change(function(event) {
+   				if($(this).val() == 0){
+   					$('#empresa').attr('disabled', 'disabled');
+   				}else{
+   					$('#empresa').removeAttr('disabled');
+   				}
+   			});
+   		});
+   	</script>	
 @endpush

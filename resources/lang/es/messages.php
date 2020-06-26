@@ -94,5 +94,9 @@ return [
 	'newPass' => 'Nueva Contraseña',
 	'confirmPass' => 'Confirmar nueva contraseña',
 	'resetPass' => 'Restablecer Mi Contraseña',
+	'newEmpresa' => 'Nueva Empresa',
+	'editEmpresa' => 'Editar Empresa',
+	'empresas' => 'Empresas',
+	'proveedor' => 'Proveedor',
 
 ];

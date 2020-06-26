@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nombre','apellido', 'email', 'password','tipo','estatus',
+        'nombre','apellido', 'email', 'password','tipo','estatus','empresa_id'
     ];
 
     /**
@@ -37,6 +37,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function isAdmin()
+    {
+        if ($this->tipo == 0 || $this->tipo == 1) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function Proyectos()
     {
         return $this->belongsToMany('App\Proyecto', 'usuario_proyectos', 'user_id', 'proyecto_id');
@@ -53,5 +62,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Comentario');
 
+    }
+
+    public function Empresa()
+    {
+        return $this->belongsTo('App\Empresa');
     }
 }

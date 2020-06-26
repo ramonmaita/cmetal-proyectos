@@ -6,7 +6,7 @@ use Closure;
 
 use Auth;
 
-class AdminMiddleware
+class SuperadminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,9 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->isAdmin() == true) {
-            return $next($request);
+        if (Auth::user()->tipo != 0) {
+            return abort(403);
         }
-        return abort(403);
+        return $next($request);
     }
 }

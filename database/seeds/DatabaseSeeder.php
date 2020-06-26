@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
         	'email' => 'ramonmaita06@gmail.com',
         	'password' => bcrypt('maita123486'),
             'estatus' => 1,
-            'tipo' => 1
+            'tipo' => 0,
+            'empresa_id' => 0
         ]);
 
         User::insert([
@@ -31,7 +32,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@cmetal.com.pe',
             'password' => bcrypt('admincmetal'),
             'estatus' => 1,
-            'tipo' => 1
+            'tipo' => 1,
+            'empresa_id' => 1
         ]);
 
         User::insert([
@@ -40,7 +42,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'supervisor@cmetal.com.pe',
             'password' => bcrypt('admincmetal'),
             'estatus' => 1,
-            'tipo' => 2
+            'tipo' => 2,
+            'empresa_id' => 1
         ]);
 
         User::insert([
@@ -49,7 +52,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'cliente@cmetal.com.pe',
             'password' => bcrypt('admincmetal'),
             'estatus' => 1,
-            'tipo' => 3
+            'tipo' => 3,
+            'empresa_id' => 1
         ]);
 
         Metrado::insert([

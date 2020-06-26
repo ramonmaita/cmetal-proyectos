@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Proyecto extends Model
 {
 	protected $fillable = [
-        'fecha_inicio', 'fecha_fin', 'nombre', 'direccion', 'descripcion', 'gastos_generales', 'descuento', 'utilidad', 'gasto_estimado', 'estatus'
+        'fecha_inicio', 'fecha_fin', 'nombre', 'direccion', 'descripcion', 'gastos_generales', 'descuento', 'utilidad', 'gasto_estimado', 'estatus','empresa_id'
     ];
     
     public function Usuarios()
@@ -46,10 +46,10 @@ class Proyecto extends Model
     	$pr = 0;
     	$pt = 0;
     	foreach ($this->Sectores as $sector) {
-    		$mr += $sector->porcentajeSector->sum('metrado');
+    		$mr += $sector->porcentajeSector->where('tipo',3)->sum('metrado');
 			$mt += $sector->Actividades->sum('metrado');
 			$pt += $sector->Actividades->sum('metrado')*$sector->Actividades->sum('precio');
-			$pr += $sector->total();
+			$pr += $sector->total(3);
     		// foreach ($sector->Actividades as $actividad) {
     		// 	$mr += $actividad->porcentajeSector->sum('metrado');
     		// }

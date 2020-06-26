@@ -100,10 +100,10 @@
                         	<h6><small class="text-muted"><i class="cursor-pointer bx bx-map mb-1 mr-50"></i> {{ __('messages.direccionProyecto') }}</small></h6>
                         	<p>{{ $proyecto->direccion }}</p>
                         	<h6><small class="text-muted"><i class="cursor-pointer bx bx-error-circle mb-1 mr-50"></i> {{ __('messages.descripcion') }}</small></h6>
-                        	<p>{{ $proyecto->descripcion }}</p>
+                        	<p>{{ $proyecto->descripcion }} {{ $proyecto->fecha_fin - $proyecto->fecha_inicio }} </p>
                       	</div>
                     </div>
-                    @if(Auth::user()->tipo == 1)
+                    @if(Auth::user()->isAdmin() == true)
                     <div class="divider">
 		              <div class="divider-text">{{ __('messages.indicadores') }}</div>
 		            </div>
@@ -221,11 +221,49 @@
               	</div>
     		</div>
   		</div>
+
+  		<div class="col-md-6">
+	      <div class="card">
+	        <div class="card-header">
+	          <h4 class="card-title">Line Chart</h4>
+	        </div>
+	        <div class="card-content">
+	          <div class="card-body pl-0">
+	            <div class="height-300">
+	              <canvas id="line-chart"></canvas>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+
   		
+
+        
   		@if($proyecto->Sectores)
 		<section id="accordionWrapa">
-		  	<h4 class="mt-3">{{ __('messages.sectores') }}</h4>
-		  	<div class="accordion" id="accordionWrapa1" data-toggle-hover="true">
+			<div class="row">
+				<div class="col-md-6">
+		  			<h4 class="">{{ __('messages.sectores') }}</h4>
+				</div>	
+				<div class="col-md-6">
+					<ul class="nav nav-tabs justify-content-end" role="tablist">
+		              	<li class="nav-item {{ (Auth::user()->tipo == 4) ? 'current' : '' }}">
+		                	<a class="nav-link {{ (Auth::user()->tipo == 4) ? 'active' : '' }} {{ (Auth::user()->isAdmin() == true || Auth::user()->tipo == 4)? '' : 'disabled' }}" id="service-tab-end" data-toggle="tab" href="#service-align-end" aria-controls="service-align-end" role="tab" aria-selected="false">
+		                  {{ __('messages.proveedor')}}
+		                	</a>
+		              	</li>
+		              	<li class="nav-item {{ (Auth::user()->tipo == 3) ? 'current' : '' }} ">
+		                	<a class="nav-link {{ (Auth::user()->tipo == 3) ? 'active' : 'active' }}  {{ (Auth::user()->isAdmin() == true || Auth::user()->tipo == 3)? '' : 'disabled' }}" id="account-tab-end" data-toggle="tab" href="#account-align-end" aria-controls="account-align-end" role="tab" aria-selected="true">
+		                  {{ __('messages.supervisor')}}
+		                	</a>
+		              	</li>
+		            </ul>
+				</div>	
+			</div>
+			<div class="tab-content">
+				<div class="tab-pane  {{ (Auth::user()->tipo == 3) ? 'active' : 'active' }}" id="account-align-end" aria-labelledby="account-tab-end" role="tabpanel">
+			  		<div class="accordion" id="accordionWrapa1" data-toggle-hover="true">
 		@endif
 		@forelse($proyecto->Sectores as $sector)
 			@php
@@ -236,7 +274,7 @@
 				$descuentoS = round($subtotalS*($proyecto->descuento/100),2);
 				$totalS = ($gastosGS + $subtotalS + $utilidadS);
 				// total realizado sector
-				$subtotalS_r = round($sector->total(),2);
+				$subtotalS_r = round($sector->total(3),2);
 				$gastosGS_r = round($subtotalS_r*($proyecto->gastos_generales/100),2);
 				$utilidadS_r = round($subtotalS_r*($proyecto->utilidad/100),2);
 				$descuentoS_r = round($subtotalS_r*($proyecto->descuento/100),2);
@@ -248,14 +286,14 @@
 		        		{{ $sector->nombre }}
 		        	</span>
 	        		<br> 
-	        		<div class="activity-progress flex-grow-1 mt-2"  @if(Auth::user()->tipo == 1) data-toggle="popover" data-content=" SUBTOTAL: {{ number_format($subtotalS_r,2) }} de <b>{{ number_format($subtotalS,2) }}</b> <br> 
+	        		<div class="activity-progress flex-grow-1 mt-2"  @if(Auth::user()->isAdmin() == true) data-toggle="popover" data-content=" SUBTOTAL: {{ number_format($subtotalS_r,2) }} de <b>{{ number_format($subtotalS,2) }}</b> <br> 
 	        			GASTOS GEN.: {{ number_format($gastosGS_r,2) }} de <b>{{ number_format($gastosGS,2) }} </b><br> 
 	        			UTILIDAD: {{ number_format($utilidadS_r,2) }} de <b>{{ number_format($utilidadS,2) }} </b><br> 
 	        			DESC COM.: {{ number_format($descuentoS_r,2) }} de <b>{{ number_format($descuentoS,2) }}</b><br> 
 	        			TOTAL: {{ number_format($totalS_r,2) }} de <b>{{ number_format($totalS,2) }}</b>" 
 	        			data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true" @endif>
 	                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
-	                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
+	                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->where('tipo',3)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->where('tipo',3)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
 	                  	</div>
 	                </div>
 
@@ -267,7 +305,7 @@
 			          			<div class="col-12">
 			          				<p>{{ $sector->descripcion }}</p>
 			          			</div>
-			          			@if(Auth::user()->tipo == 1)
+			          			@if(Auth::user()->isAdmin() == true)
 			          			<div class="col-12">
 			          				<a href="{{ route('sectores.edit',['id' => $sector->id]) }}" class="btn d-none d-sm-block float-right btn-light-cmetal mb-2">
 				                      <i class="cursor-pointer bx bx-edit font-small-3 mr-50"></i><span>{{ __('messages.editar') }}</span>
@@ -287,19 +325,19 @@
 				              	<div class="card-body px-0 py-3">
 					                <ul class="widget-todo-list-wrapper" id="widget-todo-list">
 										@forelse($sector->Actividades as $actividad)
-						                  	<li class="widget-todo-item  cursor-pointer {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'completed' : '' }}" >
+						                  	<li class="widget-todo-item  cursor-pointer {{ ($actividad->estatus == 0 || $actividad->avance(3) == 100)? 'completed' : '' }}" >
 						                    	<div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
 						                      		<div class="widget-todo-title-area d-flex align-items-center">
 								                        <div class="checkbox checkbox-shadow">
-								                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance() == 100)? 'checked="true"' : '' }}  disabled="true">
+								                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance(3) == 100)? 'checked="true"' : '' }}  disabled="true">
 								                          <label for="checkbox-actividad-{{$actividad->id}}"></label>
 								                        </div>
 
 						                      		</div>
 								                        	<div class="activity-progress flex-grow-1  modal-actividades"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}"   data-toggle="popover" data-content=" 
-								                        		MONTO ACUM: {{ $actividad->Reportes->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}
+								                        		MONTO ACUM: {{ $actividad->Reportes->where('tipo',3)->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}
 								                        		<br>
-								                        		MET ACUM: {{ $actividad->Reportes->sum('metrado')}} de {{ $actividad->metrado}}
+								                        		MET ACUM: {{ $actividad->Reportes->where('tipo',3)->sum('metrado')}} de {{ $actividad->metrado}}
 								                        		" data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
 											                  	<span class="text-muted d-inline-block mb-50">
 											                  		<span class="widget-todo-title ml-50">
@@ -307,7 +345,7 @@
 											                        </span>
 											                    </span>
 											                  <div class="progress progress-bar-success progress-sm mt-1" style="width: 92% !important; margin: auto;">
-											                    <div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{$actividad->avance()}}" style="width:{{$actividad->avance()}}%"></div>
+											                    <div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{$actividad->avance(3)}}" style="width:{{$actividad->avance(3)}}%"></div>
 											                  </div>
 											                </div>
 						                      		<div class="widget-todo-item-action d-flex align-items-center">
@@ -321,7 +359,7 @@
 							                        	<div class="dropdown">
 							                          		<span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu" data-offset="5,20"></span>
 							                          		<div class="dropdown-menu dropdown-menu-right">
-							                          			@if(Auth::user()->tipo == 1)
+							                          			@if(Auth::user()->isAdmin() == true)
 							                            		<a class="dropdown-item" href="{{ route('sectores.actividades.edit',['id' => $actividad->id]) }}"><i class="bx bx-edit-alt mr-1"></i> {{ __('messages.edit') }}</a>
 							                            		@endif
 							                            		{{-- <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> {{ __('messages.delete') }}</a> --}}
@@ -364,6 +402,146 @@
 			</div>
 		@endforelse
 		@if($proyecto->Sectores)
+					</div>
+				</div>
+				<div class="tab-pane  {{ (Auth::user()->tipo == 4) ? 'active' : '' }}" id="service-align-end" aria-labelledby="service-tab-end" role="tabpanel">
+					@forelse($proyecto->Sectores as $sector)
+						@php
+							// totales sector
+							$subtotalS = round($sector->Actividades->sum('metrado')*$sector->Actividades->sum('precio'),2);
+							$gastosGS = round($subtotalS*($proyecto->gastos_generales/100),2);
+							$utilidadS = round($subtotalS*($proyecto->utilidad/100),2);
+							$descuentoS = round($subtotalS*($proyecto->descuento/100),2);
+							$totalS = ($gastosGS + $subtotalS + $utilidadS);
+							// total realizado sector
+							$subtotalS_r = round($sector->total(4),2);
+							$gastosGS_r = round($subtotalS_r*($proyecto->gastos_generales/100),2);
+							$utilidadS_r = round($subtotalS_r*($proyecto->utilidad/100),2);
+							$descuentoS_r = round($subtotalS_r*($proyecto->descuento/100),2);
+							$totalS_r = ($subtotalS_r + $gastosGS_r +$utilidadS_r);
+						@endphp
+					    <div class="card collapse-header" >
+					      	<div id="heading-sector-{{$sector->id}}" class="card-header collapsed" role="tablist" data-toggle="collapse" data-target="#accordion-sector-{{$sector->id}}" aria-expanded="false" aria-controls="accordion-sector-{{$sector->id}}">
+					        	<span class="collapse-title mb-1 ">
+					        		{{ $sector->nombre }}
+					        	</span>
+				        		<br> 
+				        		<div class="activity-progress flex-grow-1 mt-2"  @if(Auth::user()->isAdmin() == true) data-toggle="popover" data-content=" SUBTOTAL: {{ number_format($subtotalS_r,2) }} de <b>{{ number_format($subtotalS,2) }}</b> <br> 
+				        			GASTOS GEN.: {{ number_format($gastosGS_r,2) }} de <b>{{ number_format($gastosGS,2) }} </b><br> 
+				        			UTILIDAD: {{ number_format($utilidadS_r,2) }} de <b>{{ number_format($utilidadS,2) }} </b><br> 
+				        			DESC COM.: {{ number_format($descuentoS_r,2) }} de <b>{{ number_format($descuentoS,2) }}</b><br> 
+				        			TOTAL: {{ number_format($totalS_r,2) }} de <b>{{ number_format($totalS,2) }}</b>" 
+				        			data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true" @endif>
+				                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
+				                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->where('tipo',4)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->where('tipo',4)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
+				                  	</div>
+				                </div>
+
+					      	</div>
+					      	<div id="accordion-sector-{{$sector->id}}" role="tabpanel" data-parent="#accordionWrapa1" aria-labelledby="heading-sector-{{$sector->id}}" class="collapse" style="">
+						        <div class="card-content">
+						          	<div class="card-body">
+						          		<div class="row">
+						          			<div class="col-12">
+						          				<p>{{ $sector->descripcion }}</p>
+						          			</div>
+						          			@if(Auth::user()->isAdmin() == true)
+						          			<div class="col-12">
+						          				<a href="{{ route('sectores.edit',['id' => $sector->id]) }}" class="btn d-none d-sm-block float-right btn-light-cmetal mb-2">
+							                      <i class="cursor-pointer bx bx-edit font-small-3 mr-50"></i><span>{{ __('messages.editar') }}</span>
+							                    </a>
+							                    <a href="{{ route('sectores.edit',['id' => $sector->id]) }}" class="btn d-block d-sm-none btn-block text-center btn-light-cmetal">
+							                      <i class="cursor-pointer bx bx-edit font-small-3 mr-25"></i><span>{{ __('messages.editar') }}</span></a>
+						          			</div>
+						          			@endif
+						          		</div>
+										<hr>
+						          		<div class="card widget-todo">
+							              	<div class="card-header border-bottom d-flex justify-content-between align-items-center flex-wrap">
+								                <h4 class="card-title d-flex mb-25 mb-sm-0">
+								                  <i class="bx bx-check font-medium-5 pl-25 pr-75"></i> {{ __('messages.actividades') }}
+								                </h4>
+							              	</div>
+							              	<div class="card-body px-0 py-3">
+								                <ul class="widget-todo-list-wrapper" id="widget-todo-list">
+													@forelse($sector->Actividades as $actividad)
+									                  	<li class="widget-todo-item  cursor-pointer {{ ($actividad->estatus == 0 || $actividad->avance(4) == 100)? 'completed' : '' }}" >
+									                    	<div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+									                      		<div class="widget-todo-title-area d-flex align-items-center">
+											                        <div class="checkbox checkbox-shadow">
+											                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance(4) == 100)? 'checked="true"' : '' }}  disabled="true">
+											                          <label for="checkbox-actividad-{{$actividad->id}}"></label>
+											                        </div>
+
+									                      		</div>
+											                        	<div class="activity-progress flex-grow-1  modal-actividades"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}"   data-toggle="popover" data-content=" 
+											                        		MONTO ACUM: {{ $actividad->Reportes->where('tipo',4)->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}
+											                        		<br>
+											                        		MET ACUM: {{ $actividad->Reportes->where('tipo',4)->sum('metrado')}} de {{ $actividad->metrado}}
+											                        		" data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
+														                  	<span class="text-muted d-inline-block mb-50">
+														                  		<span class="widget-todo-title ml-50">
+											                        				{{ $actividad->nombre }}
+														                        </span>
+														                    </span>
+														                  <div class="progress progress-bar-success progress-sm mt-1" style="width: 92% !important; margin: auto;">
+														                    <div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{$actividad->avance(4)}}" style="width:{{$actividad->avance(4)}}%"></div>
+														                  </div>
+														                </div>
+									                      		<div class="widget-todo-item-action d-flex align-items-center">
+									                        		<div class="badge badge-pill badge-light-info mr-1">{{ $actividad->Unidad->nombre }}</div>
+											                        <div class="avatar bg-rgba-primary m-0 mr-50">
+											                          	<div class="avatar-content">
+											                            	<span class="font-size-base text-primary">RA</span>
+											                          	</div>
+											                        </div>
+											                        @if(Auth::user()->tipo != 3)
+										                        	<div class="dropdown">
+										                          		<span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu" data-offset="5,20"></span>
+										                          		<div class="dropdown-menu dropdown-menu-right">
+										                          			@if(Auth::user()->isAdmin() == true)
+										                            		<a class="dropdown-item" href="{{ route('sectores.actividades.edit',['id' => $actividad->id]) }}"><i class="bx bx-edit-alt mr-1"></i> {{ __('messages.edit') }}</a>
+										                            		@endif
+										                            		{{-- <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> {{ __('messages.delete') }}</a> --}}
+																			
+																			{{-- @if(Auth::user()->tipo == 2) --}}
+										                            		<a class="dropdown-item modal-reporte" href="#"  data-uri="{{ route('reportes.store',['id' => $actividad->id]) }}" data-actividad="{{ $actividad->nombre }}" data-max="{{ $actividad->metrado - $actividad->Reportes->sum('metrado') }}"><i class="bx bx-file mr-1"></i> {{ __('messages.reportar') }}</a>
+										                            		{{-- @endif --}}
+										                          		</div>
+										                        	</div>
+										                        	@endif
+										                      	</div>
+									                    	</div>
+									                  	</li>
+													@empty
+														<li class="widget-todo-item">
+									                    	<div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+									                      		<div class="widget-todo-title-area d-flex align-items-center">
+											                        <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+											                        <div class="checkbox checkbox-shadow">
+											                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad">
+											                          <label for="checkbox-actividad"></label>
+											                        </div>
+											                        <span class="widget-todo-title ml-50">{{ __('messages.sinResultados' )}}</span>
+									                      		</div>
+									                      		
+									                    	</div>
+									                  	</li>
+													@endforelse
+								                </ul>
+							              	</div>
+							            </div>
+						          	</div>
+						        </div>
+					      	</div>
+					    </div>
+					@empty
+						<div class="alert alert-danger alert-block">
+							<button type="button" class="close" data-dismiss="alert">×</button>	
+						        <strong>{{ __('messages.sinResultados') }}</strong>
+						</div>
+					@endforelse
+				</div>
 		  	</div>
 		</section>
 		@endif
@@ -674,6 +852,7 @@
 <script src="{{ asset('js/scripts/pages/app-file-manager.js') }}"></script>
 <script src="{{ asset('js/scripts/extensions/dropzone.js') }}"></script>
 <script src="{{ asset('js/scripts/popover/popover.js') }}"></script>
+<script src="{{ asset('js/scripts/charts/chart-chartjs.js') }}"></script>
    <script>
    	$('[data-toggle="popover"]').popover()
    		function block() {

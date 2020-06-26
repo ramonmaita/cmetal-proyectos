@@ -1,9 +1,9 @@
 @extends('panel.app')
 
 @section('titulo_page')
-{{ __('messages.projects') }}  
+{{ __('messages.empresas') }}  
 @endsection
-@section('proyectos','active')
+@section('empresas','active')
 
 @section('breadcrumb')
 <div class="breadcrumb-wrapper col-12">
@@ -15,7 +15,7 @@
 			<a href="#">Card</a>
 		</li> --}}
 		<li class="breadcrumb-item active">
-			{{ __('messages.projects') }}            
+			{{ __('messages.empresas') }}            
 		</li>
   	</ol>
 </div>
@@ -27,7 +27,7 @@
 	<div class="col-12">
   		<div class="card">
     		<div class="card-header">
-      			<h4 class="card-title">{{ __('messages.projects') }} </h4>
+      			<h4 class="card-title">{{ __('messages.empresas') }} </h4>
       			<a class="heading-elements-toggle">
         			<i class='bx bx-dots-vertical font-medium-3'></i>
       			</a>
@@ -35,9 +35,9 @@
       			<div class="heading-elements">
         			<ul class="list-inline mb-0">
           				<li>
-            				<a href="{{ route('proyectos.create') }}" role="button" class="cmetal">
+            				<a href="{{ route('empresas.create') }}" role="button" class="cmetal">
               					<i class="bx bx-plus-circle"></i>
-              					{{ __('messages.newProject') }}
+              					{{ __('messages.newEmpresa') }}
             				</a>
           				</li>
           				
@@ -54,10 +54,9 @@
               					<table class="table data-table">
 	                                <thead>
 	                                    <tr>
-	                                        <th>{{ __('messages.fechaInicio') }}</th>
-	                                        <th>{{ __('messages.fechaFin') }}</th>
-	                                        <th>{{ __('messages.nombreProyecto') }}</th>
-	                                        <th>{{ __('messages.direccionProyecto') }}</th>
+	                                        <th>{{ __('messages.nombre') }}</th>
+	                                        <th>{{ __('messages.descripcion') }}</th>
+	                                        <th>{{ __('messages.sector') }}</th>
 	                                        <th>{{ __('messages.estatus') }}</th>
 	                                        <th>{{ __('messages.acciones') }}</th>
 	                                    </tr>
@@ -107,12 +106,11 @@
 			    },
 	            processing: true,
 	            serverSide: true,
-	            ajax: '{{ route('proyectos.index') }}',
+	            ajax: '{{ route('empresas.index') }}',
 	            columns: [
-	                { data: 'fecha_inicio', name: 'fecha_inicio' },
-	                { data: 'fecha_fin', name: 'fecha_fin' },
 	                { data: 'nombre', name: 'nombre' },
-	                { data: 'direccion', name: 'direccion' },
+	                { data: 'descripcion', name: 'descripcion' },
+	                { data: 'sector', name: 'sector' },
 	                { data: 'estatus', name: 'estatus' },
 	                { data: 'acciones', name: 'acciones' },
 	            ]

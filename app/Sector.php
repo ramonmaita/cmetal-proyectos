@@ -38,12 +38,14 @@ class Sector extends Model
        // return 
     }
 
-    public function total()
+    public function total($tipo)
     {
         $t =  0;
         foreach ($this->Actividades as $actividad) {
             foreach ($actividad->Reportes as $reporte) {
-                $t += $reporte->metrado*$actividad->precio;
+                if ($reporte->tipo  == $tipo) {
+                    $t += $reporte->metrado*$actividad->precio;
+                }
             }
         }
         return $t;

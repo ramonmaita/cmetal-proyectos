@@ -10,6 +10,8 @@ use App\Soporte;
 
 use App\Actividad;
 
+use Auth;
+
 use DB;
 
 class ReportesController extends Controller
@@ -49,6 +51,8 @@ class ReportesController extends Controller
                 'actividad_id' => $id,
                 'fecha' => $request->fecha,
                 'metrado' => $request->metrado,
+                'user_id' => Auth::user()->id,
+                'tipo' => Auth::user()->tipo
             ]);
 
             $archivos = $request->file('archivo');

@@ -27,9 +27,9 @@ class Actividad extends Model
 		return $this->hasMany('App\Reporte');
 	}
 
-	public function avance()
+	public function avance($tipo)
 	{
-		return round(($this->hasMany('App\Reporte')->sum('metrado')/$this->metrado)*100,2);
+		return round(($this->hasMany('App\Reporte')->where('tipo',$tipo)->sum('metrado')/$this->metrado)*100,2);
 		
 	}
     //
