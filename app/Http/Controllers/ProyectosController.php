@@ -196,6 +196,26 @@ class ProyectosController extends Controller
             return abort(403);
         }
         if ($proyecto) {
+            // ratio de compras p8/p7
+            // $metrados = $proyecto->MetradoProyecto()['mr'];//7
+            // $fechaA = $proyecto->fecha_inicio;
+            // foreach ($proyecto->Sectores as $sector) {
+            //      $sector->porcentajeSector->where('tipo',4);
+            //     foreach ($sector->porcentajeSector->where('tipo',4) as $metrado)
+            //     {
+                   
+            // echo $gastos = $proyecto->Gastos->whereBetween('fecha', array($fechaA, $metrado->fecha))->sum('monto');//8
+            //     echo "<br>"  ;
+            //     echo $precio = $metrado->metrado*$metrado->Actividad->precio;
+            //     echo "<br>"  ;
+            //     echo $gastos/$precio;
+            //      echo "<br> -------------- <br>"  ;
+            //      $fechaA = $metrado->fecha;
+                 
+            //     }
+            // }
+
+            // return '';
             return view('panel.proyectos.show',['proyecto' => $proyecto]);
         } else {
             return abort(404);

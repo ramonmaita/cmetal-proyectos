@@ -80,6 +80,18 @@
            		</ul>
 	          </div>
     		</div>
+    		@php
+    			use Carbon\Carbon;
+    			$fechaEmision = Carbon::parse($proyecto->fecha_inicio);
+				$fechaExpiracion = Carbon::parse($proyecto->fecha_fin);
+				$fechaActual = Carbon::now();
+				$diasDiferencia = $fechaExpiracion->diffInDays($fechaEmision);
+				$diasTDiferencia = $fechaActual->diffInDays($fechaEmision);
+
+				if ($diasTDiferencia > $diasDiferencia) {
+					$diasTDiferencia = $diasDiferencia;
+				}
+    		@endphp
 			<div class="card-content collapse show">
 				<div class="card-body">
                     <div class="row">
@@ -100,7 +112,7 @@
                         	<h6><small class="text-muted"><i class="cursor-pointer bx bx-map mb-1 mr-50"></i> {{ __('messages.direccionProyecto') }}</small></h6>
                         	<p>{{ $proyecto->direccion }}</p>
                         	<h6><small class="text-muted"><i class="cursor-pointer bx bx-error-circle mb-1 mr-50"></i> {{ __('messages.descripcion') }}</small></h6>
-                        	<p>{{ $proyecto->descripcion }} {{ $proyecto->fecha_fin - $proyecto->fecha_inicio }} </p>
+                        	<p>{{ $proyecto->descripcion }} {{ $diasDiferencia }} {{ $diasTDiferencia }}</p>
                       	</div>
                     </div>
                     @if(Auth::user()->isAdmin() == true)
@@ -108,6 +120,22 @@
 		              <div class="divider-text">{{ __('messages.indicadores') }}</div>
 		            </div>
                     <div class="row">
+                    	<div class="col-12">
+							<div class="row">
+								<div class="col-8">
+									<label for="">{{__('messages.avanceProyectado')}} </label>
+									
+								</div>
+								<div class="col-12">
+		                    		<div class="activity-progress flex-grow-1 mt-2 cursor-pointer  pb-2"   data-toggle="popover" data-content=" {{ number_format(round($diasTDiferencia,2)) }} Dias Transcurridos de {{ number_format(round($diasDiferencia,2)) }}" data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
+					                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
+					                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ round(($diasTDiferencia/ $g = ($diasDiferencia == 0) ? 1 : $diasDiferencia)*100,2)}}" style="width:{{ round(($diasTDiferencia/ $g = ($diasDiferencia == 0) ? 1 : $diasDiferencia)*100,2)}}%">
+					                    	</div>
+					                  	</div>
+					                </div>
+								</div>
+							</div>
+                    	</div>
                     	<div class="col-12">
 							<label for="">{{__('messages.avanceReal')}}  </label>
 							@php
@@ -222,7 +250,9 @@
     		</div>
   		</div>
 
-  		<div class="col-md-6">
+  		{{-- <canvas id="myChart" width="400" height="400"></canvas> --}}
+
+  		{{-- <div class="col-md-6">
 	      <div class="card">
 	        <div class="card-header">
 	          <h4 class="card-title">Line Chart</h4>
@@ -230,12 +260,12 @@
 	        <div class="card-content">
 	          <div class="card-body pl-0">
 	            <div class="height-300">
-	              <canvas id="line-chart"></canvas>
+	              <canvas id="myChart"></canvas>
 	            </div>
 	          </div>
 	        </div>
 	      </div>
-	    </div>
+	    </div> --}}
 
   		
 
@@ -263,7 +293,7 @@
 			</div>
 			<div class="tab-content">
 				<div class="tab-pane  {{ (Auth::user()->tipo == 3) ? 'active' : 'active' }}" id="account-align-end" aria-labelledby="account-tab-end" role="tabpanel">
-			  		<div class="accordion" id="accordionWrapa1" data-toggle-hover="true">
+			  		<div class="accordion" id="accordionWrapa21" data-toggle-hover="true">
 		@endif
 		@forelse($proyecto->Sectores as $sector)
 			@php
@@ -281,7 +311,7 @@
 				$totalS_r = ($subtotalS_r + $gastosGS_r +$utilidadS_r);
 			@endphp
 		    <div class="card collapse-header" >
-		      	<div id="heading-sector-{{$sector->id}}" class="card-header collapsed" role="tablist" data-toggle="collapse" data-target="#accordion-sector-{{$sector->id}}" aria-expanded="false" aria-controls="accordion-sector-{{$sector->id}}">
+		      	<div id="heading-sector-{{$sector->id}}" class="card-header collapsed" role="tablist" data-toggle="collapse" data-target="#accordion-sector-s-{{$sector->id}}" aria-expanded="false" aria-controls="accordion-sector-s-{{$sector->id}}">
 		        	<span class="collapse-title mb-1 ">
 		        		{{ $sector->nombre }}
 		        	</span>
@@ -298,7 +328,7 @@
 	                </div>
 
 		      	</div>
-		      	<div id="accordion-sector-{{$sector->id}}" role="tabpanel" data-parent="#accordionWrapa1" aria-labelledby="heading-sector-{{$sector->id}}" class="collapse" style="">
+		      	<div id="accordion-sector-s-{{$sector->id}}" role="tabpanel" data-parent="#accordionWrapa21" aria-labelledby="heading-sector-{{$sector->id}}" class="collapse" style="">
 			        <div class="card-content">
 			          	<div class="card-body">
 			          		<div class="row">
@@ -405,6 +435,7 @@
 					</div>
 				</div>
 				<div class="tab-pane  {{ (Auth::user()->tipo == 4) ? 'active' : '' }}" id="service-align-end" aria-labelledby="service-tab-end" role="tabpanel">
+					<div class="accordion" id="accordionWrapa1" data-toggle-hover="true">
 					@forelse($proyecto->Sectores as $sector)
 						@php
 							// totales sector
@@ -541,6 +572,7 @@
 						        <strong>{{ __('messages.sinResultados') }}</strong>
 						</div>
 					@endforelse
+					</div>
 				</div>
 		  	</div>
 		</section>
@@ -852,6 +884,38 @@
 <script src="{{ asset('js/scripts/pages/app-file-manager.js') }}"></script>
 <script src="{{ asset('js/scripts/extensions/dropzone.js') }}"></script>
 <script src="{{ asset('js/scripts/popover/popover.js') }}"></script>
+<!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('vendors/js/charts/chart.min.js')}}"></script>
+<script src="{{asset('js/scripts/components.js')}}"></script>
+<!-- END: Page Vendor JS-->
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        datasets: [{
+            label: 'Soles',
+            data: [10, 20]
+        }, {
+            label: 'Ratio',
+            data: [6],
+
+            // Changes this dataset to become a line
+            type: 'line'
+        }],
+        labels: ['Gasto Real', 'Avance Real']
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
 <script src="{{ asset('js/scripts/charts/chart-chartjs.js') }}"></script>
    <script>
    	$('[data-toggle="popover"]').popover()

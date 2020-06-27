@@ -6,6 +6,8 @@ use App\User;
 
 use App\Metrado;
 
+use App\Empresa;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -21,6 +23,16 @@ class DatabaseSeeder extends Seeder
         	'apellido' => 'Maita',
         	'email' => 'ramonmaita06@gmail.com',
         	'password' => bcrypt('maita123486'),
+            'estatus' => 1,
+            'tipo' => 0,
+            'empresa_id' => 0
+        ]);
+
+        User::insert([
+            'nombre' => 'Super Admin',
+            'apellido' => 'CMETAL',
+            'email' => 'superadmin@cmetal.com.pe',
+            'password' => bcrypt('admincmetal'),
             'estatus' => 1,
             'tipo' => 0,
             'empresa_id' => 0
@@ -54,6 +66,13 @@ class DatabaseSeeder extends Seeder
             'estatus' => 1,
             'tipo' => 3,
             'empresa_id' => 1
+        ]);
+
+        Empresa::insert([
+            'nombre' => 'CMETAL',
+            'descripcion' => 'METAL',
+            'sector' => 'METALICO',
+            'estatus' => '1'
         ]);
 
         Metrado::insert([
