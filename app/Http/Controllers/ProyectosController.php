@@ -22,6 +22,8 @@ use Dompdf\Dompdf;
 
 use Auth;
 
+use Carbon\Carbon;
+
 class ProyectosController extends Controller
 {
     /**
@@ -196,27 +198,363 @@ class ProyectosController extends Controller
             return abort(403);
         }
         if ($proyecto) {
+            // echo dd($proyecto->reports);
+            // $pr = $proyecto->with(['sectores', 'sectores.actividades', 
+            //                                 'sectores.actividades.reportes'])
+            //                         ->get();
+
+            //                         echo dd($pr);
+            // return '';
             // ratio de compras p8/p7
-            // $metrados = $proyecto->MetradoProyecto()['mr'];//7
-            // $fechaA = $proyecto->fecha_inicio;
-            // foreach ($proyecto->Sectores as $sector) {
-            //      $sector->porcentajeSector->where('tipo',4);
-            //     foreach ($sector->porcentajeSector->where('tipo',4) as $metrado)
-            //     {
-                   
-            // echo $gastos = $proyecto->Gastos->whereBetween('fecha', array($fechaA, $metrado->fecha))->sum('monto');//8
-            //     echo "<br>"  ;
-            //     echo $precio = $metrado->metrado*$metrado->Actividad->precio;
-            //     echo "<br>"  ;
-            //     echo $gastos/$precio;
-            //      echo "<br> -------------- <br>"  ;
-            //      $fechaA = $metrado->fecha;
-                 
-            //     }
-            // }
+            $metrados = $proyecto->MetradoProyecto()['mr'];//7
+            $fechaA = Carbon::parse($proyecto->fecha_inicio);
+            $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+            $dataratio = array();
+            $dataavance = array();
+            $datagasto = array();
+            $labels = array();
+
+            // ratio de compras p8/p7
+            foreach ($proyecto->Sectores as $sector) {
+                    if ($sector->porcentajeSector->where('tipo',3)->max('fecha') == null) {
+                        $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_inicio);
+                    } else {
+                        $f1 = Carbon::createFromFormat('Y-m-d',@$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                    }
+                    if ($proyecto->Gastos->max('fecha') == null) {
+                        $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                    } else {
+                        $f2 = Carbon::createFromFormat('Y-m-d',@$proyecto->Gastos->max('fecha'));
+                    }
+                    
+                    
+                    $c = ceil($f1->max($f2)->diffInDays($fechaA)/7);
+                    // dd($metrado);
+                    $precio = 0;
+                    for ($i=0; $i < $c; $i++) { 
+                        $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+                        $metrados = $sector->porcentajeSector->where('tipo',3)->whereBetween('fecha', array($fechaA,  $fechaB));
+                            $gastos = $proyecto->Gastos->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                        foreach ($sector->porcentajeSector->where('tipo',3)->whereBetween('fecha', array($fechaA,  $fechaB)) as $metrado) {
+                            $precio = $metrado->metrado*$metrado->Actividad->precio ;
+                        }
+                        $ratio=  ($precio == 0) ? 0 : round( $gastos/$precio,2);
+                        $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+                         array_push($dataratio, $ratio);
+                         array_push($dataavance, $precio);
+                         array_push($datagasto, $gastos);
+                         array_push($labels, $label);
+                         $precio = 0;
+                         $fechaA =  $fechaB;
+                    }
+                    // return '';
+                    
+
+                //  return '';
+                // foreach ($sector->porcentajeSector->where('tipo',3) as $metrado)
+                // {
+                //     $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+                //     $gastos = $proyecto->Gastos->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                //     $precio = $metrado->metrado*$metrado->Actividad->precio;
+                //     $ratio=  round($gastos/$precio,2);
+                //     $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+                //      array_push($dataratio, $ratio);
+                //      array_push($dataavance, $precio);
+                //      array_push($datagasto, $gastos);
+                //      array_push($labels, $label);
+                //      $fechaA =  $fechaB;
+                // }
+            }
+
+            // ratio de facturacion
+            // $dataratiof = array();
+            // $dataavanceR = array();
+            // $datafacturado = array();
+            // $labelsf = array();
+            $fechaA = $proyecto->fecha_inicio;
+            $dataratiof = '';
+            $dataavanceR = '';
+            $datafacturado = '';
+            $labelsf = '';
+
+            foreach ($proyecto->Sectores as $sector) {
+                $sector->porcentajeSector->where('tipo',3);
+                if ($sector->porcentajeSector->where('tipo',3)->max('fecha') == null) {
+                    $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_inicio);
+                } else {
+                    $f1 = Carbon::createFromFormat('Y-m-d',@$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                }
+                if ($proyecto->Facturas->max('fecha') == null) {
+                    $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                } else {
+                    $f2 = Carbon::createFromFormat('Y-m-d',@$proyecto->Facturas->max('fecha'));
+                }
+                // $f1 = Carbon::createFromFormat('Y-m-d',$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                // $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->Facturas->max('fecha'));
+                $c = ceil($f1->max($f2)->diffInDays($fechaA)/7);
+                $metrado = $sector->porcentajeSector->where('tipo',3);
+                $precio = 0;
+                for ($i=0; $i < $c; $i++) {
+                    $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+
+                    $facturado = $proyecto->Facturas->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                    foreach ($sector->porcentajeSector->where('tipo',3)->whereBetween('fecha', array($fechaA,  $fechaB)) as $metrado) {
+                        $precio = $metrado->metrado*$metrado->Actividad->precio ;
+                    }
+                    $ratio=  ($precio == 0) ? 0 : round( $facturado/$precio,2);
+                    // $ratio=  $facturado/$precio;
+                    $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                    $dataratiof .= '"'.round($ratio,2). '",';
+                    $dataavanceR .= '"'.$precio. '",' ;
+                    $datafacturado .= '"'.$facturado. '",';
+                    $labelsf .= '"'.$label. '",' ;
+                     // array_push($dataratiof, $ratio);
+                     // array_push($dataavanceR, $precio);
+                     // array_push($datafacturado, $facturado);
+                     // array_push($labelsf, $label);
+                     $fechaA =  $fechaB;
+                }
+                // foreach ($sector->porcentajeSector->where('tipo',3) as $metrado)
+                // {
+                //     $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+
+                //     $facturado = $proyecto->Facturas->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                //     $precio = $metrado->metrado*$metrado->Actividad->precio;
+                //     $ratio=  $facturado/$precio;
+                //     $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                //     $dataratiof .= '"'.round($ratio,2). '",';
+                //     $dataavanceR .= '"'.$precio. '",' ;
+                //     $datafacturado .= '"'.$facturado. '",';
+                //     $labelsf .= '"'.$label. '",' ;
+                //      // array_push($dataratiof, $ratio);
+                //      // array_push($dataavanceR, $precio);
+                //      // array_push($datafacturado, $facturado);
+                //      // array_push($labelsf, $label);
+                //      $fechaA =  $fechaB;
+                // }
+            }
+
+            // ratio de cobro
+
+            $fechaA = $proyecto->fecha_inicio;
+            $dataratioc = '';
+            $dataavanceRC = '';
+            $datacobrado = '';
+            $labelsc = '';
+            $fechaB = Carbon::parse($proyecto->fecha_inicio)->addDays(7)->format('Y-m-d');
+
+            foreach ($proyecto->Sectores as $sector) {
+                 $sector->porcentajeSector->where('tipo',3);
+                 if ($sector->porcentajeSector->where('tipo',3)->max('fecha') == null) {
+                    $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_inicio);
+                } else {
+                    $f1 = Carbon::createFromFormat('Y-m-d',@$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                }
+                if ($proyecto->Depositos->max('fecha') == null) {
+                    $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                } else {
+                    $f2 = Carbon::createFromFormat('Y-m-d',@$proyecto->Depositos->max('fecha'));
+                }
+                // $f1 = Carbon::createFromFormat('Y-m-d',$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                // $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->Depositos->max('fecha'));
+                $c = ceil($f1->max($f2)->diffInDays($fechaA)/7);
+                $metrado = $sector->porcentajeSector->where('tipo',3);
+                $precio = 0;
+                for ($i=0; $i < $c; $i++) {
+                    $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+
+                    $cobrado = $proyecto->Depositos->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                    foreach ($sector->porcentajeSector->where('tipo',3)->whereBetween('fecha', array($fechaA,  $fechaB)) as $metrado) {
+                        $precio = $metrado->metrado*$metrado->Actividad->precio ;
+                    }
+                    $ratio=  ($precio == 0) ? 0 : round( $cobrado/$precio,2);
+                    // $ratio=  $cobrado/$precio;
+                    $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                     $dataratioc .= '"'.round($ratio,2). '",';
+                    $dataavanceRC .= '"'.$precio. '",' ;
+                    $datacobrado .= '"'.$cobrado. '",';
+                    $labelsc .= '"'.$label. '",' ;
+                    $fechaA = $fechaB;
+                }
+
+                // foreach ($sector->porcentajeSector->where('tipo',3) as $metrado)
+                // {
+                //     $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+
+                //     $cobrado = $proyecto->Depositos->whereBetween('fecha', array($fechaA, $fechaB))->sum('monto');//8
+                //     $precio = $metrado->metrado*$metrado->Actividad->precio;
+                //     $ratio=  $cobrado/$precio;
+                //     $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                //     $dataratioc .= '"'.round($ratio,2). '",';
+                //     $dataavanceRC .= '"'.$precio. '",' ;
+                //     $datacobrado .= '"'.$cobrado. '",';
+                //     $labelsc .= '"'.$label. '",' ;
+                //     $fechaA = $fechaB;
+                // }
+            }
+            // ratio de flujo de caja facturada
+
+            $fechaA = $proyecto->fecha_inicio;
+            $dataratiofc = '';
+            $dataGasF = '';
+            $datafacF = '';
+            $labelsf = '';
+            $fechaB = Carbon::parse($proyecto->fecha_inicio)->addDays(7)->format('Y-m-d');
+
+            foreach ($proyecto->Sectores as $sector) {
+                 $sector->porcentajeSector->where('tipo',3);
+
+                // $f1 = Carbon::createFromFormat('Y-m-d',$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                // $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->Gastos->max('fecha'));
+                // $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->Facturas->max('fecha'));
+                if ($proyecto->Gastos->max('fecha') == null) {
+                    $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                } else {
+                    $f1 = Carbon::createFromFormat('Y-m-d',@$proyecto->Gastos->max('fecha'));
+                }
+                if ($proyecto->Facturas->max('fecha') == null) {
+                    $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                } else {
+                    $f2 = Carbon::createFromFormat('Y-m-d',@$proyecto->Facturas->max('fecha'));
+                }
+                $c = ceil($f1->max($f2)->diffInDays($fechaA)/7);
+                $metrado = $sector->porcentajeSector->where('tipo',3);
+                for ($i=0; $i < $c; $i++) {
+                    $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+
+                    $facturado = $proyecto->Facturas->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                    $gastos = $proyecto->Gastos->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                    
+                    $ratio=  ($gastos == 0) ? 0 : round( $facturado/$gastos,2);
+                    // $ratio=  $cobrado/$precio;
+                    $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                    $dataratiofc .= '"'.round($ratio,2). '",';
+                    $dataGasF .= '"'.$gastos. '",' ;
+                    $datafacF .= '"'.$facturado. '",';
+                    $labelsf .= '"'.$label. '",' ;
+                    $fechaA = $fechaB;
+                }
+            }
+
+             // ratio de flujo de liquidez
+
+            $fechaA = $proyecto->fecha_inicio;
+            $dataratiofl = '';
+            $dataGasDF = '';
+            $datafacDF = '';
+            $labelsDf = '';
+            $fechaB = Carbon::parse($proyecto->fecha_inicio)->addDays(7)->format('Y-m-d');
+
+            foreach ($proyecto->Sectores as $sector) {
+                 $sector->porcentajeSector->where('tipo',3);
+
+                // $f1 = Carbon::createFromFormat('Y-m-d',$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                // $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->Depositos->max('fecha'));
+                if ($proyecto->Gastos->max('fecha') == null) {
+                    $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                } else {
+                    $f1 = Carbon::createFromFormat('Y-m-d',@$proyecto->Gastos->max('fecha'));
+                }
+                if ($proyecto->Depositos->max('fecha') == null) {
+                    $f2 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_fin);
+                } else {
+                    $f2 = Carbon::createFromFormat('Y-m-d',@$proyecto->Depositos->max('fecha'));
+                }
+                $c = ceil($f1->max($f2)->diffInDays($fechaA)/7);
+                $metrado = $sector->porcentajeSector->where('tipo',3);
+                for ($i=0; $i < $c; $i++) {
+                    $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+
+                    $cobrado = $proyecto->Depositos->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                    $gastos = $proyecto->Gastos->whereBetween('fecha', array($fechaA,  $fechaB))->sum('monto');//8
+                    
+                    $ratio=  ($gastos == 0) ? 0 : round( $cobrado/$gastos,2);
+                    // $ratio=  $cobrado/$precio;
+                    $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                    $dataratiofl .= '"'.round($ratio,2). '",';
+                    $dataGasDF .= '"'.$gastos. '",' ;
+                    $datafacDF .= '"'.$cobrado. '",';
+                    $labelsDf .= '"'.$label. '",' ;
+                    $fechaA = $fechaB;
+                }
+            }
+
+             // ratio de produccion
+
+            $fechaA = $proyecto->fecha_inicio;
+            $dataratiofp = '';
+            $dataavFP = '';
+            $labelsFP = '';
+            $fechaB = Carbon::parse($proyecto->fecha_inicio)->addDays(7)->format('Y-m-d');
+
+            foreach ($proyecto->Sectores as $sector) {
+                 $sector->porcentajeSector->where('tipo',3);
+
+                // $f1 = Carbon::createFromFormat('Y-m-d',$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+
+                if ($sector->porcentajeSector->where('tipo',3)->max('fecha') == null) {
+                    $f1 = Carbon::createFromFormat('Y-m-d',$proyecto->fecha_inicio);
+                } else {
+                    $f1 = Carbon::createFromFormat('Y-m-d',@$sector->porcentajeSector->where('tipo',3)->max('fecha'));
+                }
+                $fechaActual = Carbon::now();
+                $f2 = ($fechaActual > $proyecto->fecha_fin) ? $proyecto->fecha_fin : $fechaActual ;
+                $c = ceil($f1->max($f2)->diffInDays($fechaA)/7);
+                for ($i=0; $i < $c; $i++) {
+                    $fechaB = Carbon::parse($fechaA)->addDays(7)->format('Y-m-d');
+                    $metrado = $sector->porcentajeSector->where('tipo',3)->whereBetween('fecha', array($fechaA,  $fechaB))->sum('metrado');
+                    
+                    $ratio=  round( $metrado/7,2);
+                    // $ratio=  $metrado/$precio;
+                    $label =  Carbon::parse($fechaA)->format('d-m-y')." - ".Carbon::parse($fechaB)->format('d-m-y') ;
+
+                    $dataratiofp .= '"'.round($ratio,2). '",';
+                    $dataavFP .= '"'.$metrado. '",';
+                    $labelsFP .= '"'.$label. '",' ;
+                    $fechaA = $fechaB;
+                }
+            }
 
             // return '';
-            return view('panel.proyectos.show',['proyecto' => $proyecto]);
+            return view('panel.proyectos.show',['proyecto' => $proyecto,
+                'labels' => $labels, 
+                'datagasto'=> $datagasto, 
+                'dataratio' => $dataratio, 
+                'dataavance' => $dataavance,
+
+                'labelsf' => $labelsf, 
+                'datafacturado'=> $datafacturado, 
+                'dataratiof' => $dataratiof, 
+                'dataavanceR' => $dataavanceR,
+
+                'dataratioc' => $dataratioc, 
+                'dataavanceRC' => $dataavanceRC,
+                'datacobrado'=> $datacobrado, 
+                'labelsc' => $labelsc, 
+
+                'dataratiofc' => $dataratiofc, 
+                'dataGasF' => $dataGasF,
+                'datafacF'=> $datafacF, 
+                'labelsf' => $labelsf, 
+
+                'dataratiofl' => $dataratiofl, 
+                'dataGasDF' => $dataGasDF,
+                'datafacDF'=> $datafacDF, 
+                'labelsDf' => $labelsDf,
+
+                'dataratiofp' => $dataratiofp,
+                'dataavFP' => $dataavFP,
+                'labelsFP' => $labelsFP, 
+
+
+
+            ]);
         } else {
             return abort(404);
         }

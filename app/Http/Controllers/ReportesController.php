@@ -52,7 +52,7 @@ class ReportesController extends Controller
                 'fecha' => $request->fecha,
                 'metrado' => $request->metrado,
                 'user_id' => Auth::user()->id,
-                'tipo' => Auth::user()->tipo
+                'tipo' => (Auth::user()->tipo == 3 || Auth::user()->tipo == 4) ? Auth::user()->tipo : 3
             ]);
 
             $archivos = $request->file('archivo');

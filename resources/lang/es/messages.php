@@ -98,5 +98,6 @@ return [
 	'editEmpresa' => 'Editar Empresa',
 	'empresas' => 'Empresas',
 	'proveedor' => 'Proveedor',
+	'avanceProyectado' => 'Avance Proyectado',
 
 ];

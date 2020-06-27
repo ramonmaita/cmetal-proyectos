@@ -9,6 +9,12 @@ class Proyecto extends Model
 	protected $fillable = [
         'fecha_inicio', 'fecha_fin', 'nombre', 'direccion', 'descripcion', 'gastos_generales', 'descuento', 'utilidad', 'gasto_estimado', 'estatus','empresa_id'
     ];
+
+    public function reports()
+    {
+        return $this->hasManyThrough('App\Actividad', 'App\Sector');
+        return $this->Sectores->hasMany('App\Actividad');
+    }
     
     public function Usuarios()
     {

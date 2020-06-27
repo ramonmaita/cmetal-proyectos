@@ -112,7 +112,7 @@
                         	<h6><small class="text-muted"><i class="cursor-pointer bx bx-map mb-1 mr-50"></i> {{ __('messages.direccionProyecto') }}</small></h6>
                         	<p>{{ $proyecto->direccion }}</p>
                         	<h6><small class="text-muted"><i class="cursor-pointer bx bx-error-circle mb-1 mr-50"></i> {{ __('messages.descripcion') }}</small></h6>
-                        	<p>{{ $proyecto->descripcion }} {{ $diasDiferencia }} {{ $diasTDiferencia }}</p>
+                        	<p>{{ $proyecto->descripcion }}</p>
                       	</div>
                     </div>
                     @if(Auth::user()->isAdmin() == true)
@@ -252,7 +252,7 @@
 
   		{{-- <canvas id="myChart" width="400" height="400"></canvas> --}}
 
-  		{{-- <div class="col-md-6">
+  	{{-- 	<div class="col-md-6">
 	      <div class="card">
 	        <div class="card-header">
 	          <h4 class="card-title">Line Chart</h4>
@@ -266,6 +266,88 @@
 	        </div>
 	      </div>
 	    </div> --}}
+	    <!-- Line Area Chart -->
+	    <div class="row">
+	    	<div class="col-lg-6 col-md-6 col-md-12">
+		      <div class="card">
+		        <div class="card-header">
+		          <h4 class="card-title">Ratio de Producción</h4>
+		        </div>
+		        <div class="card-content">
+		          <div class="card-body">
+		            <div id="ratioProduccion"></div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+
+		    <div class="col-lg-6 col-md-6 col-md-12">
+		      <div class="card">
+		        <div class="card-header">
+		          <h4 class="card-title">Ratio de Compras</h4>
+		        </div>
+		        <div class="card-content">
+		          <div class="card-body">
+		            <div id="line-area-chart"></div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+
+		    <div class="col-lg-6 col-md-6 col-md-12">
+		      <div class="card">
+		        <div class="card-header">
+		          <h4 class="card-title">Ratio de Facturación</h4>
+		        </div>
+		        <div class="card-content">
+		          <div class="card-body">
+		            <div id="ratioFacturacion"></div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+
+		    <div class="col-lg-6 col-md-6 col-md-12">
+		      <div class="card">
+		        <div class="card-header">
+		          <h4 class="card-title">Ratio de Cobro</h4>
+		        </div>
+		        <div class="card-content">
+		          <div class="card-body">
+		            <div id="ratioCobro"></div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+
+		    <div class="col-lg-6 col-md-6 col-md-12">
+		      <div class="card">
+		        <div class="card-header">
+		          <h4 class="card-title">Flujo de Caja Facturada</h4>
+		        </div>
+		        <div class="card-content">
+		          <div class="card-body">
+		            <div id="ratioFlujoCaja"></div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+
+		    <div class="col-lg-6 col-md-6 col-md-12">
+		      <div class="card">
+		        <div class="card-header">
+		          <h4 class="card-title">Flujo de Liquidez</h4>
+		        </div>
+		        <div class="card-content">
+		          <div class="card-body">
+		            <div id="ratioFlujoLiquidez"></div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+	    </div>
+
+  
 
   		
 
@@ -876,7 +958,26 @@
     </style>
 @endpush
 
+@php
+	$dav ='';
+	foreach($dataavance as $av){
+		$dav .= $av.',';
+	}
 
+	$dgs ='';
+	foreach($datagasto as $g){
+		$dgs .= $g.',';
+	}
+	$dra ='';
+	foreach($dataratio as $ratio){
+		$dra .= $ratio.',';
+	}
+	$label ='';
+	foreach($labels as $l){
+		$label .= '"'.$l.'",';
+	}
+
+@endphp
 @push('scripts')
 <script src="{{ asset('vendors/js/extensions/dropzone.min.js') }}"></script>
 <script src="{{ asset('vendors/js/ui/prism.min.js') }}"></script>
@@ -887,35 +988,83 @@
 <!-- BEGIN: Page Vendor JS-->
 <script src="{{asset('vendors/js/charts/chart.min.js')}}"></script>
 <script src="{{asset('js/scripts/components.js')}}"></script>
+  <script src="{{asset('vendors/js/charts/apexcharts.min.js')}}"></script>
+   {{-- <script src="{{asset('js/scripts/charts/chart-apex.js')}}"></script> --}}
 <!-- END: Page Vendor JS-->
-<script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        datasets: [{
-            label: 'Soles',
-            data: [10, 20]
-        }, {
-            label: 'Ratio',
-            data: [6],
+  <script>
+  	var e=["#5A8DEE","#FDAC41","#FF5B5C","#39DA8A","#00CFDD"],t={chart:{height:350,type:"line",zoom:{enabled:!1}},colors:e,dataLabels:{enabled:!1},stroke:{curve:"straight"},series:[{name:"Desktops",data:[10,41,35,51,49,62,69,91,148]}],title:{text:"Product Trends by Month",align:"left"},grid:{row:{colors:["#f3f3f3","transparent"],opacity:.5}},xaxis:{categories:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"]},yaxis:{tickAmount:5}};new ApexCharts(document.querySelector("#line-chart"),t).render();
 
-            // Changes this dataset to become a line
-            type: 'line'
-        }],
-        labels: ['Gasto Real', 'Avance Real']
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
+    	var a={chart:{height:350,type:"area"},colors:e,dataLabels:{enabled:!1},stroke:{curve:"smooth"},
+    	series:[
+    		{name:"Avance Real",data:[@php echo $dav; @endphp]},
+    		{name:"Gasto Real",data:[@php echo $dgs; @endphp]},
+    		{name:"Ratio",data:[@php echo $dra; @endphp]}
+    	],
+    	legend:{offsetY:-10},xaxis:{type:"date",
+    	categories:[
+    	@php echo "$label"; @endphp
+    	]},tooltip:{x:{format:"dd/MM/yy HH:mm"}}};new ApexCharts(document.querySelector("#line-area-chart"),a).render();
+
+    	var a={chart:{height:350,type:"area"},colors:e,dataLabels:{enabled:!1},stroke:{curve:"smooth"},
+    	series:[
+    		{name:"Avance Real",data:[@php echo $dataavanceR; @endphp]},
+    		{name:"Facturado",data:[@php echo $datafacturado; @endphp]},
+    		{name:"Ratio",data:[@php echo $dataratiof; @endphp]}
+    	],
+    	legend:{offsetY:-10},xaxis:{type:"date",
+    	categories:[
+    	@php echo "$labelsf"; @endphp
+    	]},tooltip:{x:{format:"dd/MM/yy HH:mm"}}};new ApexCharts(document.querySelector("#ratioFacturacion"),a).render();
+
+
+    	var a={chart:{height:350,type:"area"},colors:e,dataLabels:{enabled:!1},stroke:{curve:"smooth"},
+    	series:[
+    		{name:"Avance Real",data:[@php echo $dataavanceRC; @endphp]},
+    		{name:"Cobrado",data:[@php echo $datacobrado; @endphp]},
+    		{name:"Ratio",data:[@php echo $dataratioc; @endphp]}
+    	],
+    	legend:{offsetY:-10},xaxis:{type:"date",
+    	categories:[
+    	@php echo "$labelsc"; @endphp
+    	]},tooltip:{x:{format:"dd/MM/yy HH:mm"}}};new ApexCharts(document.querySelector("#ratioCobro"),a).render();
+
+    	var a={chart:{height:350,type:"area"},colors:e,dataLabels:{enabled:!1},stroke:{curve:"smooth"},
+    	series:[
+    		{name:"Gastos",data:[@php echo $dataGasF; @endphp]},
+    		{name:"Facturado",data:[@php echo $datafacF; @endphp]},
+    		{name:"Ratio",data:[@php echo $dataratiofc; @endphp]}
+    	],
+    	legend:{offsetY:-10},xaxis:{type:"date",
+    	categories:[
+    	@php echo "$labelsf"; @endphp
+    	]},tooltip:{x:{format:"dd/MM/yy HH:mm"}}};new ApexCharts(document.querySelector("#ratioFlujoCaja"),a).render();
+
+
+    	var a={chart:{height:350,type:"area"},colors:e,dataLabels:{enabled:!1},stroke:{curve:"smooth"},
+    	series:[
+    		{name:"Gastos",data:[@php echo $dataGasDF; @endphp]},
+    		{name:"Cobrado",data:[@php echo $datafacDF; @endphp]},
+    		{name:"Ratio",data:[@php echo $dataratiofl; @endphp]}
+    	],
+    	legend:{offsetY:-10},xaxis:{type:"date",
+    	categories:[
+    	@php echo "$labelsDf"; @endphp
+    	]},tooltip:{x:{format:"dd/MM/yy HH:mm"}}};new ApexCharts(document.querySelector("#ratioFlujoLiquidez"),a).render();
+
+
+    	var a={chart:{height:350,type:"area"},colors:e,dataLabels:{enabled:!1},stroke:{curve:"smooth"},
+    	series:[
+    		{name:"Avance Real",data:[@php echo $dataavFP; @endphp]},
+    		{name:"Ratio",data:[@php echo $dataratiofp; @endphp]}
+    	],
+    	legend:{offsetY:-10},xaxis:{type:"date",
+    	categories:[
+    	@php echo "$labelsFP"; @endphp
+    	]},tooltip:{x:{format:"dd/MM/yy HH:mm"}}};new ApexCharts(document.querySelector("#ratioProduccion"),a).render();
+
+    </script>
+    	{{-- @php echo "$label"; @endphp --}}
+
 <script src="{{ asset('js/scripts/charts/chart-chartjs.js') }}"></script>
    <script>
    	$('[data-toggle="popover"]').popover()
