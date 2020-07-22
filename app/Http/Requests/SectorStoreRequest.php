@@ -27,7 +27,7 @@ class SectorStoreRequest extends FormRequest
     {
         return [
             'nombre_sector' => 'required|min:3',
-            'descripcion' => 'required|min:3',
+            // 'descripcion' => 'required|min:3',
         ];
     }
 }

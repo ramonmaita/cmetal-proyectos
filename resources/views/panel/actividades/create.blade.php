@@ -59,7 +59,7 @@
 					                      <select name="unidad_id" id="unidad_id" class="form-control  {{ ($errors->has('unidad_id')) ? 'is-invalid' : '' }}">
 					                      	<option value="" data-precio="0.00"></option>
 					                      	@forelse($unidades as $unidad)
-					                      		<option value="{{ $unidad->id }}" data-precio="{{ $unidad->precio }}">{{ $unidad->nombre }}</option>
+					                      		<option value="{{ $unidad->id }}" data-precio="{{ $unidad->precio }}" {{ (old('unidad_id') == $unidad->nombre) ? 'selected' : '' }}>{{ $unidad->nombre }}</option>
 					                      	@empty
 												<option value="">{{ __('messages.sinUnidades') }}</option>
 					                      	@endforelse
@@ -74,7 +74,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.01" step="0.01"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" id="precio" >
+					                      <input type="number" min="0.01" step="0.01"  class="form-control {{ ($errors->has('precio')) ? 'is-invalid' : '' }}" name="precio" id="precio" value="{{ old('precio') }}">
 					                      <label for="last-name-column">{{ __('messages.precio') }}</label>
 					                      	@if ($errors->has('precio'))
 												<div class="invalid-feedback">
@@ -86,7 +86,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group">
-					                      <input type="text" class="form-control  {{ ($errors->has('nombre_actividad')) ? 'is-invalid' : '' }}" id="nombre_actividad" placeholder="{{ __('messages.nombre') }}" name="nombre_actividad">
+					                      <input type="text" class="form-control  {{ ($errors->has('nombre_actividad')) ? 'is-invalid' : '' }}" id="nombre_actividad" placeholder="{{ __('messages.nombre') }}" name="nombre_actividad" value="{{ old('nombre_actividad') }}">
 					                      <label for="nombre_actividad">{{ __('messages.nombre') }}</label>
 					                      	@if ($errors->has('nombre_actividad'))
 												<div class="invalid-feedback">
@@ -98,7 +98,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group">
-					                      <input type="text" id="descripcion" class="form-control  {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcion') }}">
+					                      <input type="text" id="descripcion" class="form-control  {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcion') }}"  value="{{ old('descripcion') }}">
 					                      <label for="descripcion">{{ __('messages.descripcion') }}</label>
 					                      	@if ($errors->has('descripcion'))
 												<div class="invalid-feedback">
@@ -110,7 +110,7 @@
 					                  </div>
 					                  <div class="col-md-4 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.01" step="0.01" id="metrado"  class="form-control {{ ($errors->has('metrado')) ? 'is-invalid' : '' }}" name="metrado" placeholder="{{ __('messages.metrado') }}">
+					                      <input type="number" min="0.01" step="0.01" id="metrado"  class="form-control {{ ($errors->has('metrado')) ? 'is-invalid' : '' }}" name="metrado" placeholder="{{ __('messages.metrado') }}"  value="{{ old('metrado') }}">
 					                      <label for="metrado">{{ __('messages.metrado') }}</label>
 											@if ($errors->has('metrado'))
 												<div class="invalid-feedback">
@@ -122,7 +122,7 @@
 					                  </div>
 					                  <div class="col-md-4 col-12">
 					                    <div class="form-label-group mt-2">
-					                      <input type="number" min="0.01" step="0.01" id="precioTotal"  class="form-control {{ ($errors->has('precioTotal')) ? 'is-invalid' : '' }}" name="precioTotal" placeholder="{{ __('messages.precioTotal') }}" readonly="true">
+					                      <input type="number" min="0.01" step="0.01" id="precioTotal"  class="form-control {{ ($errors->has('precioTotal')) ? 'is-invalid' : '' }}" name="precioTotal" placeholder="{{ __('messages.precioTotal') }}" readonly="true" value="{{ old('precioTotal') }}">
 					                      <label for="precioTotal">{{ __('messages.precioTotal') }}</label>
 											@if ($errors->has('precioTotal'))
 												<div class="invalid-feedback">

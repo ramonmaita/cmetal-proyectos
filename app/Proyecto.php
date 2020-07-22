@@ -52,10 +52,10 @@ class Proyecto extends Model
     	$pr = 0;
     	$pt = 0;
     	foreach ($this->Sectores as $sector) {
-    		$mr += $sector->porcentajeSector->where('tipo',3)->sum('metrado');
+    		$mr += $sector->porcentajeSector->where('tipo',2)->sum('metrado');
 			$mt += $sector->Actividades->sum('metrado');
 			$pt += $sector->Actividades->sum('metrado')*$sector->Actividades->sum('precio');
-			$pr += $sector->total(3);
+			$pr += $sector->total(2);
     		// foreach ($sector->Actividades as $actividad) {
     		// 	$mr += $actividad->porcentajeSector->sum('metrado');
     		// }

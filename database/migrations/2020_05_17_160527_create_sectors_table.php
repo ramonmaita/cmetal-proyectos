@@ -17,7 +17,7 @@ class CreateSectorsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('proyecto_id');
             $table->string('nombre');
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
             $table->timestamps();
         });
     }

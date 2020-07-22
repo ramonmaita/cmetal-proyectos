@@ -405,7 +405,7 @@
 	        			TOTAL: {{ number_format($totalS_r,2) }} de <b>{{ number_format($totalS,2) }}</b>" 
 	        			data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true" @endif>
 	                  	<div class="progress progress-bar-cmetal progress-sm mt-1" style="width: 92% !important; margin: auto;">
-	                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->where('tipo',3)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->where('tipo',3)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
+	                    	<div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{ $p = round(($sector->porcentajeSector->where('tipo',2)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}" style="width:{{ $p = round(($sector->porcentajeSector->where('tipo',2)->sum('metrado') / $res = ($sector->Actividades->sum('metrado') == 0)? 1 : $sector->Actividades->sum('metrado')/100),2)}}%"></div>
 	                  	</div>
 	                </div>
 
@@ -437,19 +437,19 @@
 				              	<div class="card-body px-0 py-3">
 					                <ul class="widget-todo-list-wrapper" id="widget-todo-list">
 										@forelse($sector->Actividades as $actividad)
-						                  	<li class="widget-todo-item  cursor-pointer {{ ($actividad->estatus == 0 || $actividad->avance(3) == 100)? 'completed' : '' }}" >
+						                  	<li class="widget-todo-item  cursor-pointer {{ ($actividad->estatus == 0 || $actividad->avance(2) == 100)? 'completed' : '' }}" >
 						                    	<div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
 						                      		<div class="widget-todo-title-area d-flex align-items-center">
 								                        <div class="checkbox checkbox-shadow">
-								                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance(3) == 100)? 'checked="true"' : '' }}  disabled="true">
+								                          <input type="checkbox" class="checkbox__input" id="checkbox-actividad-{{$actividad->id}}" {{ ($actividad->estatus == 0 || $actividad->avance(2) == 100)? 'checked="true"' : '' }}  disabled="true">
 								                          <label for="checkbox-actividad-{{$actividad->id}}"></label>
 								                        </div>
 
 						                      		</div>
 								                        	<div class="activity-progress flex-grow-1  modal-actividades"   data-uri="{{ route('actividades.show',['id' => $actividad->id]) }}"   data-toggle="popover" data-content=" 
-								                        		MONTO ACUM: {{ $actividad->Reportes->where('tipo',3)->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}
+								                        		MONTO ACUM: {{ $actividad->Reportes->where('tipo',2)->sum('metrado')*$actividad->precio }} de {{ $actividad->metrado*$actividad->precio }}
 								                        		<br>
-								                        		MET ACUM: {{ $actividad->Reportes->where('tipo',3)->sum('metrado')}} de {{ $actividad->metrado}}
+								                        		MET ACUM: {{ $actividad->Reportes->where('tipo',2)->sum('metrado')}} de {{ $actividad->metrado}}
 								                        		" data-trigger="hover" data-original-title="" title="" data-placement="top" data-html="true">
 											                  	<span class="text-muted d-inline-block mb-50">
 											                  		<span class="widget-todo-title ml-50">
@@ -457,7 +457,7 @@
 											                        </span>
 											                    </span>
 											                  <div class="progress progress-bar-success progress-sm mt-1" style="width: 92% !important; margin: auto;">
-											                    <div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{$actividad->avance(3)}}" style="width:{{$actividad->avance(3)}}%"></div>
+											                    <div class="progress-bar progress-bar-striped  progress-label" role="progressbar" aria-valuenow="{{$actividad->avance(2)}}" style="width:{{$actividad->avance(2)}}%"></div>
 											                  </div>
 											                </div>
 						                      		<div class="widget-todo-item-action d-flex align-items-center">
@@ -828,7 +828,7 @@
 	                  <div class="col-md-6 col-12">
 	                    <div class="form-label-group">
 	                      <input type="number" min="0.01" step="0.01" class="form-control {{ ($errors->has('metrado')) ? 'is-invalid' : '' }}" name="metrado" id="metrado" placeholder="{{ __('messages.metradoRealizado') }}" required="required">
-	                      <label for="last-name-column">{{ __('messages.metradoRealizado') }}</label>
+	                      <label for="metrado">{{ __('messages.metradoRealizado') }}</label>
 	                      	@if ($errors->has('metrado'))
 								<div class="invalid-feedback">
 			                    	<i class="bx bx-radio-circle"></i>
@@ -840,7 +840,7 @@
 	                  <div class="col-md-6 col-12">
 	                    <div class="form-label-group">
 	                      <input type="date"   class="form-control {{ ($errors->has('fecha')) ? 'is-invalid' : '' }}" name="fecha" id="fecha"  required="required">
-	                      <label for="last-name-column">{{ __('messages.fecha') }}</label>
+	                      <label for="fecha">{{ __('messages.fecha') }}</label>
 	                      	@if ($errors->has('fecha'))
 								<div class="invalid-feedback">
 			                    	<i class="bx bx-radio-circle"></i>

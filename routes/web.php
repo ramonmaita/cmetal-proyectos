@@ -86,5 +86,8 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function() {
     Route::resource('empresas', 'EmpresaController')->middleware('superadmin');
     Route::resource('usuarios', 'UsuariosController');
 
+    Route::get('cargar-archivo','ExcelController@index')->name('excel.index');
+    Route::post('cargar-archivo','ExcelController@subir_archivo')->name('excel.store');
+
 });
 

@@ -52,7 +52,12 @@
                 <span class="menu-title">{{ __('messages.metrados') }}</span>
             </a>
         </li> --}}
-
+		{{-- <li class="nav-item @yield('archivo')">
+		    <a href="{{ route('excel.index') }}" >
+                <i class="menu-livicon" data-icon="users"></i>
+                <span class="menu-title">{{ __('messages.archivo') }}</span>
+            </a>
+        </li> --}}
          <li class="nav-item @yield('usuarios')">
 		    <a href="{{ route('usuarios.index') }}" >
                 <i class="menu-livicon" data-icon="users"></i>

@@ -75,7 +75,7 @@ return [
 	'gastosEstimado' => 'Gasto Estimado',
 	'gastosReal' => 'Gasto Real',//nuevo
 	'utilidad' => 'Utilidad',
-	'descuento' => 'DESC COM.',
+	'descuento' => 'Descuento.',
 	'inactivo' => 'Inactivo',
 	'indicadores' => 'Indicadores',
 	'nuevoGasto' => 'Agregar Gasto',

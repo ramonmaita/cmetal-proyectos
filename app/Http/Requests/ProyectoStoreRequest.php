@@ -31,6 +31,10 @@ class ProyectoStoreRequest extends FormRequest
             'nombre_proyecto' => 'required|min:3',
             'direccion' => 'required|min:3',
             'descripcion' => 'required|min:3',
+            'gastos' => 'required|numeric',
+            'utilidad' => 'required|numeric',
+            'descuento' => 'required|numeric',
+            'gastosE' => 'required|numeric',
             'estatus' => 'required|numeric',
         ];
     }

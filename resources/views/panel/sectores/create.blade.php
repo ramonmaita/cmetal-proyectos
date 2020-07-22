@@ -50,7 +50,7 @@
 					                  
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group">
-					                      <input type="text" class="form-control  {{ ($errors->has('nombre_sector')) ? 'is-invalid' : '' }}" id="nombre_sector" placeholder="{{ __('messages.nombreSector') }}" name="nombre_sector">
+					                      <input type="text" class="form-control  {{ ($errors->has('nombre_sector')) ? 'is-invalid' : '' }}" id="nombre_sector" placeholder="{{ __('messages.nombreSector') }}" name="nombre_sector" value="{{ old('nombre_sector') }}">
 					                      <label for="nombre_sector">{{ __('messages.nombreSector') }}</label>
 					                      	@if ($errors->has('nombre_sector'))
 												<div class="invalid-feedback">
@@ -62,7 +62,7 @@
 					                  </div>
 					                  <div class="col-md-6 col-12">
 					                    <div class="form-label-group">
-					                      <input type="text" id="descripcion"  class="form-control {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcion') }}">
+					                      <input type="text" id="descripcion"  class="form-control {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" name="descripcion" placeholder="{{ __('messages.descripcion') }}" value="{{ old('descripcion') }}">
 					                      <label for="descripcion">{{ __('messages.descripcion') }}</label>
 											@if ($errors->has('descripcion'))
 												<div class="invalid-feedback">

@@ -105,5 +105,9 @@
           .dropdown-item.active, .dropdown-item:active {
               background-color: #5b1818 !important;
           }
+
+          .form-label-group > label {
+            cursor: auto !important;
+          }
       </style>
   </head>
